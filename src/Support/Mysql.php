@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2022. Semen Alekseev
+ * Copyright (c) 2022 Tephida
  *
  *  For the full copyright and license information, please view the LICENSE
  *   file that was distributed with this source code.
@@ -19,7 +19,7 @@ class Mysql
     public array $query_errors_list = array();
     public string $mysql_error = '';
     public int $mysql_error_num = 0;
-    public bool|\mysqli_result $query_id = false;
+    public \mysqli_result $query_id;
 
 
     public function connect(?string $db_user, ?string $db_pass, ?string $db_name, ?string $db_location = 'localhost', bool $show_error = true): bool
@@ -88,7 +88,9 @@ class Mysql
     public function multi_query(string $query, bool $show_error = true): void
     {
 
-        if (!$this->db_id) $this->connect(DBUSER, DBPASS, DBNAME, DBHOST);
+        if (!$this->db_id) {
+            $this->connect(DBUSER, DBPASS, DBNAME, DBHOST);
+        }
 
         if (mysqli_multi_query($this->db_id, $query)) {
             while (mysqli_more_results($this->db_id) && mysqli_next_result($this->db_id)) {
@@ -117,8 +119,9 @@ class Mysql
     /** 1 used */
     public function get_row(\mysqli_result|string $query_id = ''): array|bool|null|string
     {
-        if ($query_id == '')
+        if ($query_id == '') {
             $query_id = $this->query_id;
+        }
 
         return mysqli_fetch_assoc($query_id);
     }
@@ -135,42 +138,36 @@ class Mysql
     /** 2 used */
     function get_array(\mysqli_result|string $query_id = ''): bool|array|null
     {
-        if ($query_id == '')
+        if ($query_id == '') {
             $query_id = $this->query_id;
+        }
 
         return mysqli_fetch_array($query_id);
     }
 
-    public function super_query(string $query, bool $multi = false, $show_error = true): array|bool|null
+    public function super_query(string $query, bool $multi = false, bool $show_error = true): array|bool|null
     {
         $this->query_num++;
         $this->query($query, $show_error);
         if (!$multi) {
-
             $data = $this->get_row();
             $this->free();
-
             return $data;
-
-        } else {
-
-            $rows = array();
-
-            while ($row = $this->get_row()) {
-                $rows[] = $row;
-            }
-
-            $this->free();
-
-            return $rows;
         }
+        $rows = array();
+        while ($row = $this->get_row()) {
+            $rows[] = $row;
+        }
+        $this->free();
+        return $rows;
     }
 
     /** 1 used */
     function num_rows(\mysqli_result|string $query_id = ''): int|string
     {
-        if ($query_id == '')
+        if ($query_id == '') {
             $query_id = $this->query_id;
+        }
 
         return mysqli_num_rows($query_id);
     }
@@ -187,8 +184,9 @@ class Mysql
      */
     function get_result_fields(\mysqli_result|string $query_id = ''): array
     {
-        if ($query_id == '')
+        if ($query_id == '') {
             $query_id = $this->query_id;
+        }
 
         while ($field = mysqli_fetch_field($query_id)) {
             $fields[] = $field;
@@ -200,19 +198,21 @@ class Mysql
     public function free(\mysqli_result|string $query_id = ''): void
     {
 
-        if ($query_id == '')
+        if ($query_id == '') {
             $query_id = $this->query_id;
+        }
 
         if ($query_id) {
             mysqli_free_result($query_id);
-            $this->query_id = false;
+//            $this->query_id = false;
         }
     }
 
     public function close(): void
     {
-        if ($this->db_id)
+        if ($this->db_id) {
             mysqli_close($this->db_id);
+        }
         $this->db_id = false;
     }
 
@@ -247,9 +247,9 @@ class Mysql
 
     function __destruct()
     {
-
-        if ($this->db_id) mysqli_close($this->db_id);
-
+        if ($this->db_id) {
+            mysqli_close($this->db_id);
+        }
         $this->db_id = false;
     }
 
@@ -262,12 +262,14 @@ class Mysql
         $trace = debug_backtrace();
 
         $level = 0;
-        if (isset($trace[1]['function']) and $trace[1]['function'] == "query")
+        if (isset($trace[1]['function']) && $trace[1]['function'] == "query") {
             $level = 1;
-        if (isset($trace[1]['function']) and $trace[2]['function'] == "super_query")
+        }
+        if (isset($trace[1]['function']) && $trace[2]['function'] == "super_query") {
             $level = 2;
+        }
 
-        $trace[$level]['file'] = str_replace(ROOT_DIR, "", $trace[$level]['file']);
+//        $trace[$level]['file'] = str_replace(ROOT_DIR, "", $trace[$level]['file']);
 
         echo <<<HTML
 <!DOCTYPE html>
