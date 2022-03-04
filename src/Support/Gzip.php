@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2022. Semen Alekseev
+ * Copyright (c) 2022 Tephida
  *
  *  For the full copyright and license information, please view the LICENSE
  *   file that was distributed with this source code.
@@ -15,7 +15,7 @@ class Gzip
 {
     private bool $debug;
 
-    public function __construct($debug)
+    public function __construct(bool $debug)
     {
         $this->debug = $debug;
     }
