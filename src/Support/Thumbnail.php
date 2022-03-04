@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2022. Semen Alekseev
+ * Copyright (c) 2022 Tephida
  *
  *  For the full copyright and license information, please view the LICENSE
  *   file that was distributed with this source code.
@@ -239,7 +239,7 @@ class Thumbnail
      * NOT USED
      * @return void
      */
-    protected function show(): void
+    final protected function show(): void
     {
         if ($this->img['format'] == "JPG" || $this->img['format'] == "JPEG") {
             imageJPEG($this->img['src'], "", $this->img['quality']);
