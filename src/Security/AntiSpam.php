@@ -26,6 +26,17 @@ class AntiSpam
     /** @var int Максимум сообществ за день */
     private static int $max_groups = 5;
 
+    /** @var int Максимум альбомов за день */
+    private static int $max_albums = 5;
+    private static int $max_album_photos = 5;
+    private static int $max_music = 5;
+    private static int $max_doc = 5;
+    private static int $max_group_forum = 5;
+    private static int $max_group_forum_msg = 5;
+    private static int $max_notes = 5;
+    private static int $max_videos = 5;
+    private static int $max_support = 5;
+
     private static array $types = array(
         'friends' => 1,
         'messages' => 2,
@@ -33,6 +44,14 @@ class AntiSpam
         'identical' => 4,
         'comments' => 5,
         'groups' => 6,
+        'albums' => 7,
+        'music' => 8,
+        'doc' => 9,
+        'group_forum' => 10,
+        'group_forum_msg' => 1,
+        'notes' => 12,
+        'videos' => 13,
+        'support' => 14,
     );
 
     public static function limit(string $act): int
@@ -54,6 +73,33 @@ class AntiSpam
         }
         if ($act === 'groups') {
             return self::$max_groups;
+        }
+        if ($act === 'albums') {
+            return self::$max_albums;
+        }
+        if ($act === 'album_photos') {
+            return self::$max_album_photos;
+        }
+        if ($act === 'music') {
+            return self::$max_music;
+        }
+        if ($act === 'doc') {
+            return self::$max_doc;
+        }
+        if ($act === 'group_forum') {
+            return self::$max_group_forum;
+        }
+        if ($act === 'group_forum_msg') {
+            return self::$max_group_forum_msg;
+        }
+        if ($act === 'notes') {
+            return self::$max_notes;
+        }
+        if ($act === 'videos') {
+            return self::$max_videos;
+        }
+        if ($act === 'support') {
+            return self::$max_support;
         }
         return 0;
     }
