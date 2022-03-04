@@ -1,6 +1,6 @@
 <?php
 /*
- *   (c) Semen Alekseev
+ * Copyright (c) 2022 Tephida
  *
  *  For the full copyright and license information, please view the LICENSE
  *   file that was distributed with this source code.
@@ -11,13 +11,18 @@ namespace FluffyDollop\Support;
 
 class AntiSpam
 {
-    //Лимиты на день
+    /** @var int Лимиты новых друзей на день */
     private static int $max_friends = 40;
-    private static int $max_msg = 40; #максимум сообщений не друзьям
-    private static int $max_wall = 10; #максимум записей на стену
-    private static int $max_identical = 10; #максимум одинаковых текстовых данных
-    private static int $max_comm = 100; #максимум комментариев к записям на стенах людей и сообществ
-    private static int $max_groups = 5; #максимум сообществ за день
+    /** @var int Максимум сообщений не друзьям */
+    private static int $max_msg = 40;
+    /** @var int Максимум записей на стену */
+    private static int $max_wall = 10;
+    /** @var int Максимум одинаковых текстовых данных */
+    private static int $max_identical = 10;
+    /** @var int Максимум комментариев к записям на стенах людей и сообществ */
+    private static int $max_comm = 100;
+    /** @var int Максимум сообществ за день */
+    private static int $max_groups = 5;
 
     private static array $types = array(
         'friends' => 1,
@@ -51,7 +56,12 @@ class AntiSpam
         return 0;
     }
 
-    public static function check(string $act, $text = false): void
+    /**
+     * @param string $act
+     * @param false|string $text
+     * @return void
+     */
+    public static function check(string $act, false|string $text = false): void
     {
         $user_info = Registry::get('user_info');
         $db = Registry::get('db');
@@ -74,6 +84,10 @@ class AntiSpam
         }
     }
 
+    /**
+     * @param string $act
+     * @return int
+     */
     private static function getType(string $act): int
     {
         return self::$types[$act];
