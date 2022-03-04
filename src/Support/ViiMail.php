@@ -279,8 +279,6 @@ class ViiMail
     function smtp_crlf_encode($data) {
         $data .= "\n";
         $data = str_replace( "\n", "\r\n", str_replace( "\r", "", $data ) );
-        $data = str_replace( "\n.\r\n", "\n. \r\n", $data );
-
-        return $data;
+        return str_replace("\n.\r\n", "\n. \r\n", $data);
     }
 }
