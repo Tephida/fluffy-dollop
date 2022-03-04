@@ -7,7 +7,9 @@
  *
  */
 
-namespace FluffyDollop\Support;
+namespace FluffyDollop\Security;
+
+use FluffyDollop\Support\Registry;
 
 class AntiSpam
 {
