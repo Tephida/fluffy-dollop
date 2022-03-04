@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2022. Semen Alekseev
+ * Copyright (c) 2022 Tephida
  *
  *  For the full copyright and license information, please view the LICENSE
  *   file that was distributed with this source code.
@@ -51,7 +51,7 @@ class Filesystem
                 return true;
             }
             return false;
-        } elseif (is_file($file)) {
+        } else if (is_file($file)) {
             unlink($file);
             return true;
         } else {
@@ -75,7 +75,7 @@ class Filesystem
         return false;
     }
 
-    public static function copy($from, $to): bool
+    public static function copy(string $from, string $to): bool
     {
         if (is_file($from) && !is_file($to)) {
             return copy($from, $to);
@@ -83,23 +83,26 @@ class Filesystem
         return false;
     }
 
-    public static function dirSize($directory): bool|int
+    public static function dirSize(string $directory): bool|int
     {
-        if (!is_dir($directory))
+        if (!is_dir($directory)) {
             return -1;
+        }
         $size = 0;
         if ($DIR = opendir($directory)) {
-            while (($dirfile = readdir($DIR)) !== false) {
-                if (is_link($directory . '/' . $dirfile) || $dirfile == '.' || $dirfile == '..')
+            while (($dir_file = readdir($DIR)) !== false) {
+                if (is_link($directory . '/' . $dir_file) || $dir_file == '.' || $dir_file == '..') {
                     continue;
-                if (is_file($directory . '/' . $dirfile))
-                    $size += filesize($directory . '/' . $dirfile);
-                else if (is_dir($directory . '/' . $dirfile)) {
-                    $dirSize = self::dirSize($directory . '/' . $dirfile);
-                    if ($dirSize >= 0)
+                }
+                if (is_file($directory . '/' . $dir_file)) {
+                    $size += filesize($directory . '/' . $dir_file);
+                } else if (is_dir($directory . '/' . $dir_file)) {
+                    $dirSize = self::dirSize($directory . '/' . $dir_file);
+                    if ($dirSize >= 0) {
                         $size += $dirSize;
-                    else
+                    } else {
                         return -1;
+                    }
                 }
             }
             closedir($DIR);
