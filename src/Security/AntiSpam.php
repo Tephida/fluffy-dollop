@@ -107,9 +107,9 @@ class AntiSpam
     /**
      * @param string $act
      * @param false|string $text
-     * @return void
+     * @return false
      */
-    public static function check(string $act, false|string $text = false): void
+    public static function check(string $act, false|string $text = false): bool
     {
         $user_info = Registry::get('user_info');
         $db = Registry::get('db');
@@ -127,9 +127,7 @@ class AntiSpam
         //Проверяем в таблице
         $check = $db->super_query("SELECT COUNT(*) AS cnt FROM `antispam` WHERE act = '{$action}' AND user_id = '{$user_info['user_id']}' AND date = '{$antiDate}' AND txt = '{$text}'");
         //Если кол-во, логов больше, то ставим блок
-        if ($check['cnt'] >= $limit) {
-            die('antispam_err');
-        }
+        return $check['cnt'] < $limit;
     }
 
     /**
