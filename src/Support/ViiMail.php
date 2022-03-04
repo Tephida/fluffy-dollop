@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2022. Semen Alekseev
+ * Copyright (c) 2022 Tephida
  *
  *  For the full copyright and license information, please view the LICENSE
  *   file that was distributed with this source code.
@@ -154,7 +154,7 @@ class ViiMail
     }
 
     function smtp_send() {
-        $this->smtp_fp = fsockopen($this->smtp_host, intval($this->smtp_port), $errno, $errstr, 30);
+        $this->smtp_fp = fsockopen($this->smtp_host, (int)$this->smtp_port, $errno, $errstr, 30);
 
         if( ! $this->smtp_fp ) {
             $this->smtp_error( "Could not open a socket to the SMTP server" );
