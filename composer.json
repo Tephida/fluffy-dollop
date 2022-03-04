@@ -1,0 +1,30 @@
+{
+  "name": "tephida/fluffy-dollop",
+  "description": "System parts",
+  "keywords": ["support"],
+  "license": "MIT",
+  "type": "library",
+  "require": {
+    "php": "^8.0",
+    "ext-iconv": "*",
+    "ext-mysqli": "*",
+    "ext-gd": "*",
+    "ext-zlib": "*"
+  },
+  "authors": [
+    {
+      "name": "Semen Alekseev",
+      "email": "semyon492@ya.ru"
+    }
+  ],
+  "require-dev": {
+  },
+  "autoload": {
+    "files": [
+      "src/helpers.php"
+    ],
+    "psr-4": {
+      "FluffyDollop\\": "src/"
+    }
+  }
+}
