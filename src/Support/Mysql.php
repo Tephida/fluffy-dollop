@@ -19,7 +19,7 @@ class Mysql
     public array $query_errors_list = array();
     public string $mysql_error = '';
     public int $mysql_error_num = 0;
-    public \mysqli_result $query_id;
+    public bool|\mysqli_result $query_id;
 
 
     public function connect(?string $db_user, ?string $db_pass, ?string $db_name, ?string $db_location = 'localhost', bool $show_error = true): bool
