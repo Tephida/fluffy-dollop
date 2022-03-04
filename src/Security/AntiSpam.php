@@ -107,7 +107,7 @@ class AntiSpam
     /**
      * @param string $act
      * @param false|string $text
-     * @return false
+     * @return bool true - exceeded
      */
     public static function check(string $act, false|string $text = false): bool
     {
@@ -127,7 +127,7 @@ class AntiSpam
         //Проверяем в таблице
         $check = $db->super_query("SELECT COUNT(*) AS cnt FROM `antispam` WHERE act = '{$action}' AND user_id = '{$user_info['user_id']}' AND date = '{$antiDate}' AND txt = '{$text}'");
         //Если кол-во, логов больше, то ставим блок
-        return $check['cnt'] < $limit;
+        return $check['cnt'] >= $limit;
     }
 
     /**
