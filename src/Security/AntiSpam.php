@@ -28,14 +28,14 @@ class AntiSpam
 
     /** @var int Максимум альбомов за день */
     private static int $max_albums = 5;
-    private static int $max_album_photos = 5;
+    private static int $max_album_photos = 40;
     private static int $max_music = 5;
     private static int $max_doc = 5;
     private static int $max_group_forum = 5;
-    private static int $max_group_forum_msg = 5;
+    private static int $max_group_forum_msg = 40;
     private static int $max_notes = 5;
     private static int $max_videos = 5;
-    private static int $max_support = 5;
+    private static int $max_support = 1;
 
     private static array $types = array(
         'friends' => 1,
@@ -48,7 +48,7 @@ class AntiSpam
         'music' => 8,
         'doc' => 9,
         'group_forum' => 10,
-        'group_forum_msg' => 1,
+        'group_forum_msg' => 11,
         'notes' => 12,
         'videos' => 13,
         'support' => 14,
