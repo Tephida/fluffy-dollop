@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2022. Semen Alekseev
+ * Copyright (c) 2022 Tephida
  *
  *  For the full copyright and license information, please view the LICENSE
  *   file that was distributed with this source code.
@@ -9,7 +9,7 @@
 
 namespace FluffyDollop\Support;
 
-use Exception;
+use Error;
 
 class Router
 {
@@ -29,9 +29,9 @@ class Router
     private static string $requestMethod;
 
     /**
-     * @var string $requestHandler
+     * @var string|null $requestHandler
      */
-    private static string $requestHandler;
+    private static ?string $requestHandler;
 
     /**
      * @var array|null $params
@@ -66,20 +66,19 @@ class Router
 
     /**
      * Factory method construct Router from global vars.
-     * @return \Mozg\classes\Router
-     * @throws Exception
+     * @return Router
+     * @throws Error
      */
     public static function fromGlobals(): Router
     {
-        $config = settings_load();
-//        $server = $requests->server;
+        $url = $_SERVER['HTTP_HOST'];
         $method = getenv('REQUEST_METHOD');
         if (isset($_SERVER['REQUEST_URI'])) {
             $uri_data = $_SERVER['REQUEST_URI'];
-        } elseif (!empty($config['home_url'])) {
-            $uri_data = $config['home_url'];
+        } elseif ($url) {
+            $uri_data = $url;
         } else {
-            throw new Exception('err');
+            throw new Error('err');
         }
         if (false !== $pos__ = strpos($uri_data, '?')) {
             $uri_data = substr($uri_data, 0, $pos__);
@@ -128,7 +127,7 @@ class Router
      * Set Request handler.
      * @param $handler string|callable
      */
-    public function setRequestHandler(string|callable $handler)
+    final public function setRequestHandler(string|callable $handler)
     {
         self::$requestHandler = $handler;
     }
@@ -221,12 +220,12 @@ class Router
      * @param callable|null|string $handler
      * @param array $params
      * @return mixed
-     * @throws Exception
+     * @throws Error
      */
     public function executeHandler(callable|null|string $handler = null, array $params = []): mixed
     {
         if ($handler === null) {
-            throw new Exception('err');
+            throw new Error('err');
         }
 
         // execute action in callable
@@ -242,7 +241,7 @@ class Router
 
             if (class_exists('\\Mozg\\modules\\' . $controller_name)) {
                 if (!method_exists('\\Mozg\\modules\\' . $controller_name, $action)) {
-                    throw new Exception("Method '\\App\\Modules\\{$controller_name}::{$action}()' not found");
+                    throw new Error("Method '\\App\\Modules\\{$controller_name}::{$action}()' not found");
                 }
 
                 $class = '\\Mozg\\modules\\' . $controller_name;
@@ -252,8 +251,8 @@ class Router
                 $params = [$params];
                 return call_user_func_array([$controller, $action], $params);
             }
-            throw new Exception("Class '{$controller_name}' not found");
+            throw new Error("Class '{$controller_name}' not found");
         }
-        throw new Exception('Execute handler error');
+        throw new Error('Execute handler error');
     }
 }
