@@ -9,9 +9,13 @@
 
 namespace FluffyDollop\Security;
 
+use FluffyDollop\Contracts\Security\Factory;
 use FluffyDollop\Support\Registry;
 
-class AntiSpam
+/**
+ *
+ */
+class AntiSpam implements Factory
 {
     /** @var int Лимиты новых друзей на день */
     private static int $max_friends = 40;
@@ -28,15 +32,42 @@ class AntiSpam
 
     /** @var int Максимум альбомов за день */
     private static int $max_albums = 5;
+    /**
+     * @var int
+     */
     private static int $max_album_photos = 40;
+    /**
+     * @var int
+     */
     private static int $max_music = 5;
+    /**
+     * @var int
+     */
     private static int $max_doc = 5;
+    /**
+     * @var int
+     */
     private static int $max_group_forum = 5;
+    /**
+     * @var int
+     */
     private static int $max_group_forum_msg = 40;
+    /**
+     * @var int
+     */
     private static int $max_notes = 5;
+    /**
+     * @var int
+     */
     private static int $max_videos = 5;
+    /**
+     * @var int
+     */
     private static int $max_support = 1;
 
+    /**
+     * @var array|int[]
+     */
     private static array $types = array(
         'friends' => 1,
         'messages' => 2,
@@ -54,6 +85,10 @@ class AntiSpam
         'support' => 14,
     );
 
+    /**
+     * @param string $act
+     * @return int
+     */
     public static function limit(string $act): int
     {
         if ($act === 'friends') {

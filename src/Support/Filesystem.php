@@ -20,7 +20,7 @@ class Filesystem
     public static function createDir(string $dir, int $mode = 0777): bool
     {
         if (!is_dir($dir) && !mkdir($dir, $mode, true) && !is_dir($dir)) {
-//            throw new InvalidArgumentException("Unable to create directory '$dir' with mode ");
+            throw new InvalidArgumentException("Unable to create directory '$dir' with mode ");
             return false;
         }
 
@@ -108,5 +108,19 @@ class Filesystem
             closedir($DIR);
         }
         return $size;
+    }
+
+    public static function formatsize($file_size)
+    {
+        if ($file_size >= 1073741824) {
+            $file_size = round($file_size / 1073741824 * 100) / 100 . " Gb";
+        } elseif ($file_size >= 1048576) {
+            $file_size = round($file_size / 1048576 * 100) / 100 . " Mb";
+        } elseif ($file_size >= 1024) {
+            $file_size = round($file_size / 1024 * 100) / 100 . " Kb";
+        } else {
+            $file_size .= " b";
+        }
+        return $file_size;
     }
 }

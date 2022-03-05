@@ -9,8 +9,6 @@
 
 namespace FluffyDollop\Support;
 
-use FluffyDollop\Support\Mysql;
-
 class Registry
 {
     /** Статическое хранилище для данных */
@@ -41,7 +39,7 @@ class Registry
      * Возвращает данные по ключу или null, если не данных нет
      *
      * @param string $name
-     * @return string|bool|array|\FluffyDollop\Support\Mysql|null
+     * @return string|bool|array|Mysql|null
      */
     public static function get(mixed $name): string|bool|null|array|Mysql
     {
