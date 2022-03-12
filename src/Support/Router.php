@@ -44,14 +44,14 @@ class Router
     private static array $placeholders = [':seg' => '([^\/]+)', ':num' => '([0-9]+)', ':any' => '(.+)'];
 
     /**
-     * @var string $controllerName
+     * @var string|null $controllerName
      */
-    private static string $controllerName;
+    private static ?string $controllerName;
 
     /**
-     * @var string $actionName
+     * @var string|null $actionName
      */
-    private static string $actionName;
+    private static ?string $actionName;
 
     /**
      * Router constructor.

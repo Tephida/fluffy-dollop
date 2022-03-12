@@ -110,7 +110,7 @@ class Filesystem
         return $size;
     }
 
-    public static function formatsize($file_size)
+    public static function formatsize(int|string $file_size): string
     {
         if ($file_size >= 1073741824) {
             $file_size = round($file_size / 1073741824 * 100) / 100 . " Gb";

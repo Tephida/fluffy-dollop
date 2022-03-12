@@ -19,7 +19,7 @@ class Mysql
     public array $query_errors_list = array();
     public string $mysql_error = '';
     public int $mysql_error_num = 0;
-    public bool|\mysqli_result $query_id;
+    public \mysqli_result $query_id;
 
 
     public function connect(?string $db_user, ?string $db_pass, ?string $db_name, ?string $db_location = 'localhost', bool $show_error = true): bool
@@ -119,10 +119,9 @@ class Mysql
     /** 1 used */
     public function get_row(\mysqli_result|string $query_id = ''): array|bool|null|string
     {
-        if ($query_id == '') {
+        if ($query_id === '') {
             $query_id = $this->query_id;
         }
-
         return mysqli_fetch_assoc($query_id);
     }
 
@@ -138,7 +137,7 @@ class Mysql
     /** 2 used */
     function get_array(\mysqli_result|string $query_id = ''): bool|array|null
     {
-        if ($query_id == '') {
+        if ($query_id === '') {
             $query_id = $this->query_id;
         }
 
@@ -165,7 +164,7 @@ class Mysql
     /** 1 used */
     function num_rows(\mysqli_result|string $query_id = ''): int|string
     {
-        if ($query_id == '') {
+        if ($query_id === '') {
             $query_id = $this->query_id;
         }
 
@@ -178,13 +177,13 @@ class Mysql
     }
 
     /**
-     * @param $query_id
+     * @param \mysqli_result|string $query_id
      * @return array
      * @deprecated
      */
     function get_result_fields(\mysqli_result|string $query_id = ''): array
     {
-        if ($query_id == '') {
+        if ($query_id === '') {
             $query_id = $this->query_id;
         }
 
@@ -198,7 +197,7 @@ class Mysql
     public function free(\mysqli_result|string $query_id = ''): void
     {
 
-        if ($query_id == '') {
+        if ($query_id === '') {
             $query_id = $this->query_id;
         }
 
@@ -239,7 +238,7 @@ class Mysql
 
         $mode_list = implode(',', $modes_array);
 
-        if ($row[0] != $mode_list) {
+        if ($row[0] !== $mode_list) {
             $this->query("SET SESSION sql_mode='{$mode_list}'", false, false);
         }
 
@@ -262,10 +261,10 @@ class Mysql
         $trace = debug_backtrace();
 
         $level = 0;
-        if (isset($trace[1]['function']) && $trace[1]['function'] == "query") {
+        if (isset($trace[1]['function']) && $trace[1]['function'] === "query") {
             $level = 1;
         }
-        if (isset($trace[1]['function']) && $trace[2]['function'] == "super_query") {
+        if (isset($trace[1]['function']) && $trace[2]['function'] === "super_query") {
             $level = 2;
         }
 

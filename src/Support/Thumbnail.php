@@ -19,14 +19,14 @@ class Thumbnail
     {
         //detect image format
         $info = getimagesize($img_file);
-
-        if ($info[2] == 2) {
+        $info[2] = (int)$info[2];
+        if ($info[2] === 2) {
             $this->img['format'] = "JPEG";
             $this->img['src'] = imagecreatefromjpeg($img_file);
-        } elseif ($info[2] == 3) {
+        } elseif ($info[2] === 3) {
             $this->img['format'] = "PNG";
             $this->img['src'] = imagecreatefrompng($img_file);
-        } elseif ($info[2] == 1) {
+        } elseif ($info[2] === 1) {
             $this->img['format'] = "GIF";
             $this->img['src'] = imagecreatefromgif($img_file);
         } else {
@@ -34,7 +34,6 @@ class Thumbnail
             Filesystem::delete($img_file);
             exit();
         }
-
         if (!$this->img['src']) {
             echo "Not Supported File! Thumbnails can only be made from .jpg, gif and .png images!";
             Filesystem::delete($img_file);
@@ -55,19 +54,20 @@ class Thumbnail
 
         if ($jqCrop) {
             return $this->jqCrop((int)$size[0], (int)$size[1], $jqCrop);
-        } else if (count($size) == 2) {
+        }
+
+        if (count($size) == 2) {
             $size[0] = (int)$size[0];
             $size[1] = (int)$size[1];
             return $this->crop($size[0], $size[1]);
-        } else {
-            $size[0] = (int)$size[0];
-            return $this->scale($size[0], $site);
         }
+
+        $size[0] = (int)$size[0];
+        return $this->scale($size[0], $site);
     }
 
     private function crop(int $nw, int $nh): int
     {
-
         $w = $this->img['lebar'];
         $h = $this->img['tinggi'];
 
@@ -89,7 +89,7 @@ class Thumbnail
 
         $this->img['des'] = imagecreatetruecolor($nw, $nh);
 
-        if ($this->img['format'] == "PNG") {
+        if ($this->img['format'] === "PNG") {
             imagealphablending($this->img['des'], false);
             imagesavealpha($this->img['des'], true);
         }
@@ -123,7 +123,7 @@ class Thumbnail
         $w = $this->img['lebar'];
         $h = $this->img['tinggi'];
 
-        if ($w <= $nw and $h <= $nh) {
+        if ($w <= $nw && $h <= $nh) {
             $this->img['lebar_thumb'] = $w;
             $this->img['tinggi_thumb'] = $h;
             return 0;
@@ -134,12 +134,12 @@ class Thumbnail
 
         $size_ratio = max($nw / $w, $nh / $h);
 
-        $src_w = ceil($nw / $size_ratio);
-        $src_h = ceil($nh / $size_ratio);
+//        $src_w = ceil($nw / $size_ratio);
+//        $src_h = ceil($nh / $size_ratio);
 
         $this->img['des'] = imagecreatetruecolor($nw, $nh);
 
-        if ($this->img['format'] == "PNG") {
+        if ($this->img['format'] === "PNG") {
             imagealphablending($this->img['des'], false);
             imagesavealpha($this->img['des'], true);
         }
@@ -203,7 +203,7 @@ class Thumbnail
 
         $this->img['des'] = imagecreatetruecolor($this->img['lebar_thumb'], $this->img['tinggi_thumb']);
 
-        if ($this->img['format'] == "PNG") {
+        if ($this->img['format'] === "PNG") {
             imagealphablending($this->img['des'], false);
             imagesavealpha($this->img['des'], true);
         }
@@ -222,13 +222,13 @@ class Thumbnail
 
     public function save($save = ""): void
     {
-        if ($this->img['format'] == "JPG" || $this->img['format'] == "JPEG") {
+        if ($this->img['format'] === "JPG" || $this->img['format'] === "JPEG") {
             imagejpeg($this->img['src'], $save, $this->img['quality']);
-        } elseif ($this->img['format'] == "PNG") {
+        } elseif ($this->img['format'] === "PNG") {
             imagealphablending($this->img['src'], false);
             imagesavealpha($this->img['src'], true);
             imagepng($this->img['src'], $save);
-        } elseif ($this->img['format'] == "GIF") {
+        } elseif ($this->img['format'] === "GIF") {
             imagegif($this->img['src'], $save);
         }
         imagedestroy($this->img['src']);
@@ -241,11 +241,11 @@ class Thumbnail
      */
     final protected function show(): void
     {
-        if ($this->img['format'] == "JPG" || $this->img['format'] == "JPEG") {
+        if ($this->img['format'] === "JPG" || $this->img['format'] === "JPEG") {
             imageJPEG($this->img['src'], "", $this->img['quality']);
-        } elseif ($this->img['format'] == "PNG") {
+        } elseif ($this->img['format'] === "PNG") {
             imagePNG($this->img['src']);
-        } elseif ($this->img['format'] == "GIF") {
+        } elseif ($this->img['format'] === "GIF") {
             imageGIF($this->img['src']);
         }
         imagedestroy($this->img['src']);
