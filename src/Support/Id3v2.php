@@ -32,7 +32,7 @@ class Id3v2
     {
         //TODO- handling of comments is quite weird
         //but I don't know how it is encoded so I will leave the way it is for now
-        if ($type == 'COMM') {
+        if ($type === 'COMM') {
             $tag = substr($tag, 0, 3) . substr($tag, 10);
         }
         //mb_convert_encoding is corrupted in some versions of PHP so I use iconv
@@ -45,13 +45,16 @@ class Id3v2
         };
     }
 
-    public function read($file): false|array
+    public function read(string $file): false|array
     {
+        if (!file_exists($file)) {
+            return false;
+        }
         $f = fopen($file, 'rb');
         $header = fread($f, 10);
-        $header = @unpack("a3signature/c1version_major/c1version_minor/c1flags/Nsize", $header);
+        $header = unpack("a3signature/c1version_major/c1version_minor/c1flags/Nsize", $header);
 
-        if (!$header['signature'] == 'ID3') {
+        if (!$header['signature'] === 'ID3') {
             $this->error = 'This file does not contain ID3 v2 tag';
             fclose($f);
             return false;
@@ -64,7 +67,6 @@ class Id3v2
             if (!isset($this->tags[$tag])) {
                 break;
             }
-
             $size = fread($f, 2);
             $size = unpack('n', $size);
             $size = $size[1]+2;
@@ -74,7 +76,6 @@ class Id3v2
 
             $result[$this->tags[$tag]] = $value;
         }
-
         fclose($f);
         return $result;
     }
