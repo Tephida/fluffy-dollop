@@ -75,6 +75,11 @@ class Filesystem
         return false;
     }
 
+    /**
+     * @param string $from
+     * @param string $to
+     * @return bool
+     */
     public static function copy(string $from, string $to): bool
     {
         if (is_file($from) && !is_file($to)) {
@@ -83,6 +88,10 @@ class Filesystem
         return false;
     }
 
+    /**
+     * @param string $directory
+     * @return bool|int
+     */
     public static function dirSize(string $directory): bool|int
     {
         if (!is_dir($directory)) {
@@ -110,6 +119,10 @@ class Filesystem
         return $size;
     }
 
+    /**
+     * @param int|string $file_size
+     * @return string
+     */
     public static function formatsize(int|string $file_size): string
     {
         if ($file_size >= 1073741824) {

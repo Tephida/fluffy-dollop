@@ -13,6 +13,7 @@ use FluffyDollop\Support\Registry;
 
 class Gzip
 {
+    /** @var bool */
     private bool $debug;
 
     public function __construct(bool $debug)
@@ -20,6 +21,9 @@ class Gzip
         $this->debug = $debug;
     }
 
+    /**
+     * @return false|string
+     */
     public function CheckCanGzip(): false|string
     {
         if (headers_sent() || connection_aborted() || !function_exists('ob_gzhandler') || ini_get('zlib.output_compression')) {
@@ -34,6 +38,9 @@ class Gzip
         return false;
     }
 
+    /**
+     * @return int
+     */
     public function GzipOut(): int
     {
         $db = Registry::get('db');

@@ -13,6 +13,7 @@ use FluffyDollop\Support\Filesystem;
 
 class Thumbnail
 {
+    /** @var array */
     private array $img;
 
     public function __construct(string $img_file)
@@ -48,6 +49,12 @@ class Thumbnail
         $this->img['quality'] = 90;
     }
 
+    /**
+     * @param $size
+     * @param $site
+     * @param string|int $jqCrop
+     * @return int
+     */
     public function size_auto($size = 100, $site = 0, string|int $jqCrop = 0): int
     {
         $size = explode("x", $size);
@@ -66,6 +73,11 @@ class Thumbnail
         return $this->scale($size[0], $site);
     }
 
+    /**
+     * @param int $nw
+     * @param int $nh
+     * @return int
+     */
     private function crop(int $nw, int $nh): int
     {
         $w = $this->img['lebar'];
@@ -100,6 +112,12 @@ class Thumbnail
         return 1;
     }
 
+    /**
+     * @param int $nw
+     * @param int $nh
+     * @param string|int $cropData
+     * @return int
+     */
     private function jqCrop(int $nw, int $nh, string|int $cropData): int
     {
         $cropDataExp = explode('|', $cropData);
@@ -151,6 +169,11 @@ class Thumbnail
         return 1;
     }
 
+    /**
+     * @param int $size
+     * @param int $site
+     * @return int
+     */
     private function scale(int $size = 100, int $site = 0): int
     {
         if ($this->img['lebar'] <= $size && $this->img['tinggi'] <= $size) {
@@ -215,11 +238,19 @@ class Thumbnail
 
     }
 
+    /**
+     * @param $quality
+     * @return void
+     */
     public function jpeg_quality($quality = 90): void
     {
         $this->img['quality'] = $quality;
     }
 
+    /**
+     * @param $save
+     * @return void
+     */
     public function save($save = ""): void
     {
         if ($this->img['format'] === "JPG" || $this->img['format'] === "JPEG") {

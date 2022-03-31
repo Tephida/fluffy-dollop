@@ -11,6 +11,9 @@ namespace FluffyDollop\Support;
 
 use ErrorException;
 
+/**
+ * @deprecated
+ */
 class Templates
 {
     public string|false $dir = '.';
