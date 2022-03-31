@@ -11,8 +11,10 @@ namespace FluffyDollop\Support;
 
 class Id3v2
 {
+    /** @var string */
     public string $error;
 
+    /** @var array|string[] */
     private array $tags = array(
         'TALB' => 'Album',
         'TCON' => 'Genre',
@@ -28,6 +30,11 @@ class Id3v2
         'COMM' => 'Comment'
     );
 
+    /**
+     * @param string $tag
+     * @param string $type
+     * @return false|string
+     */
     private function decTag(string $tag, string $type): false|string
     {
         //TODO- handling of comments is quite weird
@@ -45,6 +52,10 @@ class Id3v2
         };
     }
 
+    /**
+     * @param string $file
+     * @return false|array
+     */
     public function read(string $file): false|array
     {
         if (!file_exists($file)) {

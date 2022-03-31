@@ -11,17 +11,42 @@ namespace FluffyDollop\Support;
 
 use JetBrains\PhpStorm\NoReturn;
 
+/**
+ *
+ */
 class Mysql
 {
+
+    /** @var false|\mysqli|null */
     public false|\mysqli|null $db_id = false;
+
+    /** @var int */
     public int $query_num = 0;
+
+    /** @var array */
     public array $query_list = array();
+
+    /** @var array */
     public array $query_errors_list = array();
+
+    /** @var string */
     public string $mysql_error = '';
+
+    /** @var int */
     public int $mysql_error_num = 0;
+
+    /** @var \mysqli_result */
     public \mysqli_result $query_id;
 
 
+    /**
+     * @param string|null $db_user
+     * @param string|null $db_pass
+     * @param string|null $db_name
+     * @param string|null $db_location
+     * @param bool $show_error
+     * @return bool
+     */
     public function connect(?string $db_user, ?string $db_pass, ?string $db_name, ?string $db_location = 'localhost', bool $show_error = true): bool
     {
         $db_location = explode(":", $db_location);
@@ -55,6 +80,11 @@ class Mysql
         return true;
     }
 
+    /**
+     * @param string $query
+     * @param bool $show_error
+     * @return \mysqli_result|bool
+     */
     public function query(string $query, bool $show_error = true,): \mysqli_result|bool
     {
         if (!$this->db_id)
@@ -144,6 +174,12 @@ class Mysql
         return mysqli_fetch_array($query_id);
     }
 
+    /**
+     * @param string $query
+     * @param bool $multi
+     * @param bool $show_error
+     * @return array|bool|null
+     */
     public function super_query(string $query, bool $multi = false, bool $show_error = true): array|bool|null
     {
         $this->query_num++;
@@ -171,6 +207,9 @@ class Mysql
         return mysqli_num_rows($query_id);
     }
 
+    /**
+     * @return int|string
+     */
     public function insert_id(): int|string
     {
         return mysqli_insert_id($this->db_id);
@@ -194,6 +233,10 @@ class Mysql
         return $fields ?? array();
     }
 
+    /**
+     * @param \mysqli_result|string $query_id
+     * @return void
+     */
     public function free(\mysqli_result|string $query_id = ''): void
     {
 
@@ -207,6 +250,9 @@ class Mysql
         }
     }
 
+    /**
+     * @return void
+     */
     public function close(): void
     {
         if ($this->db_id) {
@@ -215,6 +261,9 @@ class Mysql
         $this->db_id = false;
     }
 
+    /**
+     * @return void
+     */
     private function sql_mode(): void
     {
         $remove_modes = array('STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'ONLY_FULL_GROUP_BY', 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE', 'TRADITIONAL');
@@ -244,6 +293,9 @@ class Mysql
 
     }
 
+    /**
+     *
+     */
     function __destruct()
     {
         if ($this->db_id) {
@@ -252,6 +304,12 @@ class Mysql
         $this->db_id = false;
     }
 
+    /**
+     * @param string $error
+     * @param int $error_num
+     * @param string $query
+     * @return void
+     */
     #[NoReturn] private function display_error(string $error, int $error_num, string $query = ''): void
     {
 
