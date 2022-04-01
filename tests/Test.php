@@ -13,14 +13,11 @@ class Test extends TestCase
 {
     public function testInput()
     {
-        $instance = textFilter('ttt');
-        echo $instance . PHP_EOL;
+        $instance_1 = textFilter('ttt');
 
-        $instance = textFilter('<div>ttt' . PHP_EOL . 't`tt<div>');
-        echo $instance . PHP_EOL;
+        $instance_2 = textFilter('<div>ttt' . PHP_EOL . 't`tt<div>');
 
-        $instance = textFilter('<div>t`tt<div>', 2500, true);
-        echo $instance;
+        $instance_3 = textFilter('<div>t`tt<div>', 2500, true);
 
         self::assertTrue(true);
     }

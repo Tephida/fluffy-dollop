@@ -42,4 +42,4 @@ jobs:
       - name: PHPUnit
         run: |
           composer update --prefer-dist --no-interaction --no-ansi --no-progress
-          php vendor/bin/simple-phpunit
+          php vendor/bin/phpunit
