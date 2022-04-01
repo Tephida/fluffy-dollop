@@ -31,7 +31,7 @@ class AbstractException extends Exception
     /**
      * @return string
      */
-    public function getSoapFault()
+    public function getSoapFault(): string
     {
         return $this->_soapFault;
     }
