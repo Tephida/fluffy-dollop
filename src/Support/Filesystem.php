@@ -19,12 +19,7 @@ class Filesystem
      */
     public static function createDir(string $dir, int $mode = 0777): bool
     {
-        if (!is_dir($dir) && !mkdir($dir, $mode, true) && !is_dir($dir)) {
-            throw new InvalidArgumentException("Unable to create directory '$dir' with mode ");
-            return false;
-        }
-
-        return true;
+        return !(!is_dir($dir) && !mkdir($dir, $mode, true) && !is_dir($dir));
     }
 
     /**
@@ -66,13 +61,7 @@ class Filesystem
      */
     public static function check(string $file): bool
     {
-        if (is_file($file)) {
-            return true;
-        }
-        if (is_dir($file)) {
-            return true;
-        }
-        return false;
+        return is_file($file) || is_dir($file);
     }
 
     /**
@@ -100,7 +89,7 @@ class Filesystem
         $size = 0;
         if ($DIR = opendir($directory)) {
             while (($dir_file = readdir($DIR)) !== false) {
-                if (is_link($directory . '/' . $dir_file) || $dir_file == '.' || $dir_file == '..') {
+                if (is_link($directory . '/' . $dir_file) || $dir_file === '.' || $dir_file === '..') {
                     continue;
                 }
                 if (is_file($directory . '/' . $dir_file)) {
@@ -126,14 +115,13 @@ class Filesystem
     public static function formatsize(int|string $file_size): string
     {
         if ($file_size >= 1073741824) {
-            $file_size = round($file_size / 1073741824 * 100) / 100 . " Gb";
+            return round($file_size / 1073741824 * 100) / 100 . " Gb";
         } elseif ($file_size >= 1048576) {
-            $file_size = round($file_size / 1048576 * 100) / 100 . " Mb";
+            return round($file_size / 1048576 * 100) / 100 . " Mb";
         } elseif ($file_size >= 1024) {
-            $file_size = round($file_size / 1024 * 100) / 100 . " Kb";
+            return round($file_size / 1024 * 100) / 100 . " Kb";
         } else {
-            $file_size .= " b";
+            return $file_size . " b";
         }
-        return $file_size;
     }
 }
