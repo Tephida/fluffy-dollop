@@ -15,16 +15,19 @@ use FluffyDollop\Support\Registry;
  * @param bool $strip_tags
  * @return string
  */
-function textFilter(string $source, int $substr_num = 25000, bool $strip_tags = false): string
+function textFilter(string $input_text, int $substr_num = 25000, bool $strip_tags = false): string
 {
-    $source = trim($source);
-    $source = stripslashes($source);
-    if (empty($source)) {
+    if (empty($input_text)) {
         return '';
-    } else {
-        return htmlspecialchars($source, ENT_QUOTES, 'UTF-8');
     }
 
+    if ($strip_tags) {
+        $input_text = strip_tags($input_text);
+    }
+    $input_text = trim($input_text);
+    $input_text = stripslashes($input_text);
+    $input_text = str_replace(PHP_EOL, '<br>', $input_text);
+    return htmlspecialchars($input_text, ENT_QUOTES, 'UTF-8');
 }
 
 /**
@@ -110,16 +113,20 @@ function to_translit(string $value, bool $lower = true, bool $part = true): arra
     $value = trim(strip_tags($value));
     $value = preg_replace("/\s+/ms", "-", $value);
     $value = strtr($value, $lang_translit);
-    if ($part)
+    if ($part) {
         $value = preg_replace("/[^a-z0-9\_\-.]+/mi", "", $value);
-    else
+    } else {
         $value = preg_replace("/[^a-z0-9\_\-]+/mi", "", $value);
+    }
     $value = preg_replace('#[\-]+#i', '-', $value);
-    if ($lower)
+    if ($lower) {
         $value = strtolower($value);
+    }
     if (strlen($value) > 200) {
         $value = substr($value, 0, 200);
-        if (($temp_max = strrpos($value, '-'))) $value = substr($value, 0, $temp_max);
+        if (($temp_max = strrpos($value, '-'))) {
+            $value = substr($value, 0, $temp_max);
+        }
     }
     return $value;
 }
