@@ -117,7 +117,7 @@ jobs:
       - name: 'Run Unit Tests with PHPUnit'
         continue-on-error: ${{ matrix.experimental }}
         run: |
-          phpunit.xml.dist > phpunit.xml
+          cp -f phpunit.xml.dist  phpunit.xml
           ./vendor/bin/phpunit \
             --verbose \
             --stderr \
