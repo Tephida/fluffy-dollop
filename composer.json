@@ -18,7 +18,8 @@
     }
   ],
   "require-dev": {
-    "phpunit/phpunit": "^9.5.11"
+    "phpunit/phpunit": "^9.5.11",
+    "php-coveralls/php-coveralls": "^2.1"
   },
   "autoload": {
     "files": [
@@ -26,6 +27,11 @@
     ],
     "psr-4": {
       "FluffyDollop\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "FluffyDollop\\tests\\": "tests/"
     }
   }
 }
