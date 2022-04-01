@@ -10,7 +10,7 @@
 use FluffyDollop\Support\Registry;
 
 /**
- * @param string $source
+ * @param string $input_text
  * @param int $substr_num
  * @param bool $strip_tags
  * @return string
