@@ -70,13 +70,9 @@ class Mysql
                 return false;
             }
         }
-
         mysqli_set_charset($this->db_id, COLLATE);
-
         mysqli_query($this->db_id, "SET NAMES '" . COLLATE . "'", 0);
-
         $this->sql_mode();
-
         return true;
     }
 
