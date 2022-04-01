@@ -19,7 +19,7 @@ class RegistryTest extends TestCase
     {
         $instance = Registry::set('ttt', 'qwerty');
         self::assertEquals('qwerty', $instance);
-        Registry::set('ttt', 'ttt');
+        Registry::set('ttt', 'aaa');
         Registry::set('1', 123);
         Registry::set('2', ['fff' => 12]);
         self::assertTrue(true);
