@@ -13,9 +13,9 @@ class Test extends TestCase
 {
     public function testInput()
     {
-        $instance_1 = textFilter('ttt');
+        $instance_1 = textFilter('qwerty');
 
-        $instance_2 = textFilter('<div>ttt' . PHP_EOL . 't`tt<div>');
+        $instance_2 = textFilter('<div>qwerty' . PHP_EOL . 't`tt<div>');
 
         $instance_3 = textFilter('<div>t`tt<div>', 2500, true);
 
@@ -24,13 +24,13 @@ class Test extends TestCase
 
     public function testInt()
     {
-        $instance = intFilter('ttt');
+        $instance = intFilter('qwerty');
         self::assertEquals(0, $instance);
     }
 
     public function testRequestFilter()
     {
-        $instance = requestFilter('ttt');
+        $instance = requestFilter('qwerty');
         self::assertEquals('', $instance);
 
     }
