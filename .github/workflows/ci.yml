@@ -70,9 +70,8 @@ jobs:
         operating_system:
           - ubuntu-latest
         php_versions:
-          - '7.3'
-          - '7.4'
           - '8.0'
+          - '8.1'
         include:
           - operating_system: ubuntu-latest
             php_versions: '8.0'
@@ -118,7 +117,7 @@ jobs:
       - name: 'Run Unit Tests with PHPUnit'
         continue-on-error: ${{ matrix.experimental }}
         run: |
-          sed phpunit.xml.dist > phpunit.xml
+          phpunit.xml.dist > phpunit.xml
           ./vendor/bin/phpunit \
             --verbose \
             --stderr \
