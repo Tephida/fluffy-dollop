@@ -53,7 +53,7 @@ class Registry
      * @param mixed $obj
      * @return string
      */
-    public static function set(mixed $name, mixed $obj): mixed
+    public static function set(string $name, mixed $obj): mixed
     {
         return self::$store[$name] = $obj;
     }
