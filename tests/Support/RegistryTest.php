@@ -19,7 +19,7 @@ class RegistryTest extends TestCase
     {
         $instance = Registry::set('ttt', 'qwerty');
         self::assertEquals('qwerty', $instance);
-        Registry::set('ttt', 'aaa');
+        Registry::set('ttt', 'word');
         Registry::set('1', 123);
         Registry::set('2', ['fff' => 12]);
         self::assertTrue(true);
@@ -28,7 +28,7 @@ class RegistryTest extends TestCase
     final public function testGet(): void
     {
         $instance = Registry::get('ttt');
-        self::assertEquals('ttt', $instance);
+        self::assertEquals('word', $instance);
         $instance = Registry::get('fail');
         self::assertEquals(null, $instance);
     }
@@ -36,7 +36,7 @@ class RegistryTest extends TestCase
     final public function testExists(): void
     {
         $instance = Registry::get('ttt');
-        self::assertEquals('ttt', $instance);
+        self::assertEquals('word', $instance);
         $instance = Registry::get('fail');
         self::assertEquals(null, $instance);
     }
