@@ -47,7 +47,7 @@ class Mysql
      * @param bool $show_error
      * @return bool
      */
-    public function connect(?string $db_user, ?string $db_pass, ?string $db_name, ?string $db_location = 'localhost', bool $show_error = true): bool
+    final public function connect(?string $db_user, ?string $db_pass, ?string $db_name, ?string $db_location = 'localhost', bool $show_error = true): bool
     {
         $db_location = explode(":", $db_location);
 
@@ -83,22 +83,16 @@ class Mysql
      */
     public function query(string $query, bool $show_error = true,): \mysqli_result|bool
     {
-        if (!$this->db_id)
+        if (!$this->db_id) {
             $this->connect(DBUSER, DBPASS, DBNAME, DBHOST);
-
+        }
         if (!($this->query_id = mysqli_query($this->db_id, $query))) {
-
             $this->mysql_error = mysqli_error($this->db_id);
             $this->mysql_error_num = mysqli_errno($this->db_id);
-
             if ($show_error) {
-
                 $this->display_error($this->mysql_error, $this->mysql_error_num, $query);
-
             } else {
-
                 $this->query_errors_list[] = array('query' => $query, 'error' => $this->mysql_error);
-
             }
         }
         $this->query_num++;
@@ -111,7 +105,7 @@ class Mysql
      * @param bool $show_error
      * @return void
      */
-    public function multi_query(string $query, bool $show_error = true): void
+    final public function multi_query(string $query, bool $show_error = true): void
     {
 
         if (!$this->db_id) {
@@ -125,25 +119,19 @@ class Mysql
         }
 
         if (mysqli_error($this->db_id)) {
-
             $this->mysql_error = mysqli_error($this->db_id);
             $this->mysql_error_num = mysqli_errno($this->db_id);
-
             if ($show_error) {
-
                 $this->display_error($this->mysql_error, $this->mysql_error_num, $query);
-
             } else {
-
                 $this->query_errors_list[] = array('query' => $query, 'error' => $this->mysql_error);
-
             }
         }
         $this->query_num++;
     }
 
     /** 1 used */
-    public function get_row(\mysqli_result|string $query_id = ''): array|bool|null|string
+    final public function get_row(\mysqli_result|string $query_id = ''): array|bool|null|string
     {
         if ($query_id === '') {
             $query_id = $this->query_id;

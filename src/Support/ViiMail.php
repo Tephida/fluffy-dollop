@@ -9,9 +9,11 @@
 
 namespace FluffyDollop\Support;
 
+/**
+ * @deprecated
+ */
 class ViiMail
 {
-
     public mixed $site_name = "";
     public mixed $from = "";
     public string $to = "";
@@ -215,14 +217,14 @@ class ViiMail
             $to_array = array($this->to);
 
             if( count( $this->bcc ) ) {
-                foreach ( $this->bcc as $bcc ) {
+                foreach ($this->bcc as $bcc ) {
                     if( preg_match( "/^.+\@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,4}|[0-9]{1,4})(\]?)$/", str_replace( " ", "", $bcc ) ) ) {
                         $to_array[] = "<".$bcc.">";
                     }
                 }
             }
 
-            foreach ( $to_array as $to_email ) {
+            foreach ($to_array as $to_email ) {
                 $this->smtp_send_cmd( "RCPT TO:" . $to_email );
 
                 if ($this->smtp_code !== 250) {
