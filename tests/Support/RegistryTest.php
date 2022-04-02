@@ -36,7 +36,7 @@ class RegistryTest extends TestCase
     final public function testExists(): void
     {
         $instance = Registry::get('ttt');
-        self::assertEquals('ttt', $instance);
+        self::assertEquals('word', $instance);
         $instance = Registry::get('fail');
         self::assertEquals(null, $instance);
     }
