@@ -10,6 +10,7 @@
 namespace FluffyDollop\Exception;
 
 use Exception;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * A Abstration of Excecption to include the __toString function
@@ -23,7 +24,7 @@ class AbstractException extends Exception
      * @param string|false $message Error description $message
      * @param string|false $code HTTP Error code $code
      */
-    public function __construct(string|false $message = false, $code = false)
+    #[Pure] public function __construct(string|false $message = false, $code = false)
     {
         parent::__construct($message, $code);
     }
