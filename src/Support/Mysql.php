@@ -11,43 +11,18 @@ namespace FluffyDollop\Support;
 
 use JetBrains\PhpStorm\NoReturn;
 
-/**
- *
- */
 class Mysql
 {
-
-    /** @var false|\mysqli|null */
     public false|\mysqli|null $db_id = false;
-
-    /** @var int */
     public int $query_num = 0;
-
-    /** @var array */
     public array $query_list = array();
-
-    /** @var array */
     public array $query_errors_list = array();
-
-    /** @var string */
     public string $mysql_error = '';
-
-    /** @var int */
     public int $mysql_error_num = 0;
-
-    /** @var \mysqli_result */
-    public \mysqli_result $query_id;
+    public bool|\mysqli_result $query_id;
 
 
-    /**
-     * @param string|null $db_user
-     * @param string|null $db_pass
-     * @param string|null $db_name
-     * @param string|null $db_location
-     * @param bool $show_error
-     * @return bool
-     */
-    final public function connect(?string $db_user, ?string $db_pass, ?string $db_name, ?string $db_location = 'localhost', bool $show_error = true): bool
+    public function connect(?string $db_user, ?string $db_pass, ?string $db_name, ?string $db_location = 'localhost', bool $show_error = true): bool
     {
         $db_location = explode(":", $db_location);
 
@@ -70,29 +45,34 @@ class Mysql
                 return false;
             }
         }
+
         mysqli_set_charset($this->db_id, COLLATE);
+
         mysqli_query($this->db_id, "SET NAMES '" . COLLATE . "'", 0);
+
         $this->sql_mode();
+
         return true;
     }
 
-    /**
-     * @param string $query
-     * @param bool $show_error
-     * @return \mysqli_result|bool
-     */
     public function query(string $query, bool $show_error = true,): \mysqli_result|bool
     {
-        if (!$this->db_id) {
+        if (!$this->db_id)
             $this->connect(DBUSER, DBPASS, DBNAME, DBHOST);
-        }
+
         if (!($this->query_id = mysqli_query($this->db_id, $query))) {
+
             $this->mysql_error = mysqli_error($this->db_id);
             $this->mysql_error_num = mysqli_errno($this->db_id);
+
             if ($show_error) {
+
                 $this->display_error($this->mysql_error, $this->mysql_error_num, $query);
+
             } else {
+
                 $this->query_errors_list[] = array('query' => $query, 'error' => $this->mysql_error);
+
             }
         }
         $this->query_num++;
@@ -105,7 +85,7 @@ class Mysql
      * @param bool $show_error
      * @return void
      */
-    final public function multi_query(string $query, bool $show_error = true): void
+    public function multi_query(string $query, bool $show_error = true): void
     {
 
         if (!$this->db_id) {
@@ -119,23 +99,30 @@ class Mysql
         }
 
         if (mysqli_error($this->db_id)) {
+
             $this->mysql_error = mysqli_error($this->db_id);
             $this->mysql_error_num = mysqli_errno($this->db_id);
+
             if ($show_error) {
+
                 $this->display_error($this->mysql_error, $this->mysql_error_num, $query);
+
             } else {
+
                 $this->query_errors_list[] = array('query' => $query, 'error' => $this->mysql_error);
+
             }
         }
         $this->query_num++;
     }
 
     /** 1 used */
-    final public function get_row(\mysqli_result|string $query_id = ''): array|bool|null|string
+    public function get_row(\mysqli_result|string $query_id = ''): array|bool|null|string
     {
-        if ($query_id === '') {
+        if ($query_id == '') {
             $query_id = $this->query_id;
         }
+
         return mysqli_fetch_assoc($query_id);
     }
 
@@ -151,19 +138,13 @@ class Mysql
     /** 2 used */
     function get_array(\mysqli_result|string $query_id = ''): bool|array|null
     {
-        if ($query_id === '') {
+        if ($query_id == '') {
             $query_id = $this->query_id;
         }
 
         return mysqli_fetch_array($query_id);
     }
 
-    /**
-     * @param string $query
-     * @param bool $multi
-     * @param bool $show_error
-     * @return array|bool|null
-     */
     public function super_query(string $query, bool $multi = false, bool $show_error = true): array|bool|null
     {
         $this->query_num++;
@@ -184,29 +165,26 @@ class Mysql
     /** 1 used */
     function num_rows(\mysqli_result|string $query_id = ''): int|string
     {
-        if ($query_id === '') {
+        if ($query_id == '') {
             $query_id = $this->query_id;
         }
 
         return mysqli_num_rows($query_id);
     }
 
-    /**
-     * @return int|string
-     */
     public function insert_id(): int|string
     {
         return mysqli_insert_id($this->db_id);
     }
 
     /**
-     * @param \mysqli_result|string $query_id
+     * @param $query_id
      * @return array
      * @deprecated
      */
     function get_result_fields(\mysqli_result|string $query_id = ''): array
     {
-        if ($query_id === '') {
+        if ($query_id == '') {
             $query_id = $this->query_id;
         }
 
@@ -217,14 +195,10 @@ class Mysql
         return $fields ?? array();
     }
 
-    /**
-     * @param \mysqli_result|string $query_id
-     * @return void
-     */
     public function free(\mysqli_result|string $query_id = ''): void
     {
 
-        if ($query_id === '') {
+        if ($query_id == '') {
             $query_id = $this->query_id;
         }
 
@@ -234,9 +208,6 @@ class Mysql
         }
     }
 
-    /**
-     * @return void
-     */
     public function close(): void
     {
         if ($this->db_id) {
@@ -245,9 +216,6 @@ class Mysql
         $this->db_id = false;
     }
 
-    /**
-     * @return void
-     */
     private function sql_mode(): void
     {
         $remove_modes = array('STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'ONLY_FULL_GROUP_BY', 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE', 'TRADITIONAL');
@@ -271,15 +239,12 @@ class Mysql
 
         $mode_list = implode(',', $modes_array);
 
-        if ($row[0] !== $mode_list) {
+        if ($row[0] != $mode_list) {
             $this->query("SET SESSION sql_mode='{$mode_list}'", false, false);
         }
 
     }
 
-    /**
-     *
-     */
     function __destruct()
     {
         if ($this->db_id) {
@@ -288,12 +253,6 @@ class Mysql
         $this->db_id = false;
     }
 
-    /**
-     * @param string $error
-     * @param int $error_num
-     * @param string $query
-     * @return void
-     */
     #[NoReturn] private function display_error(string $error, int $error_num, string $query = ''): void
     {
 
@@ -303,10 +262,10 @@ class Mysql
         $trace = debug_backtrace();
 
         $level = 0;
-        if (isset($trace[1]['function']) && $trace[1]['function'] === "query") {
+        if (isset($trace[1]['function']) && $trace[1]['function'] == "query") {
             $level = 1;
         }
-        if (isset($trace[1]['function']) && $trace[2]['function'] === "super_query") {
+        if (isset($trace[1]['function']) && $trace[2]['function'] == "super_query") {
             $level = 2;
         }
 
