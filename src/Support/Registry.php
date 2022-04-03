@@ -44,9 +44,9 @@ class Registry
      * @param string $name
      * @return string|bool|array|Mysql|null
      */
-    public static function get(mixed $name): string|bool|array|Mysql
+    public static function get(mixed $name): string|bool|array|Mysql|null
     {
-        return self::$store[$name];
+        return self::$store[$name] ?? null;
     }
 
     /**
