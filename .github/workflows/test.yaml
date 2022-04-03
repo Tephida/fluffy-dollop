@@ -1,45 +1,49 @@
-name: fluffy-dollop
+name: Tests
 
-on:
-  pull_request: ~
-  push:
-    branches:
-      - master
+on: [ push, pull_request ]
 
 jobs:
-  coding-style:
+  tests:
+    name: Tests PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 8.0, 8.1 ]
+        experimental: [ false ]
+        include:
+          - php: 8.1
+            analysis: true
+
     steps:
-      - uses: actions/checkout@master
-      - uses: shivammathur/setup-php@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
-          coverage: none
-      - name: php-cs-fixer
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
+
+      - name: Install dependencies with Composer
+        uses: ramsey/composer-install@v1
+
+      - name: Coding standards
+        if: matrix.analysis
+        run: vendor/bin/phpcs
+
+      - name: Static analysis
+        if: matrix.analysis
+        run: vendor/bin/phpstan
+
+      - name: Tests
+        run: vendor/bin/phpunit --coverage-clover clover.xml
+
+      - name: Upload coverage results to Coveralls
+        if: matrix.analysis
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          wget https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/download/v2.19.0/php-cs-fixer.phar -q
-          php php-cs-fixer.phar fix --dry-run --diff
-  tests-php-8-0:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-          coverage: none
-      - name: PHPUnit
-        run: |
-          composer update --prefer-dist --no-interaction --no-ansi --no-progress
-          php vendor/bin/phpunit
-  tests-php-8-1:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.1'
-          coverage: none
-      - name: PHPUnit
-        run: |
-          composer update --prefer-dist --no-interaction --no-ansi --no-progress
-          php vendor/bin/phpunit
+          composer require php-coveralls/php-coveralls -n -W
+          vendor/bin/php-coveralls --coverage_clover=clover.xml -v
