@@ -10,7 +10,7 @@
 namespace FluffyDollop\Support;
 
 /**
- * @deprecated
+ * Registry
  */
 class Registry
 {
@@ -44,9 +44,9 @@ class Registry
      * @param string $name
      * @return string|bool|array|Mysql|null
      */
-    public static function get(mixed $name): string|bool|null|array|Mysql
+    public static function get(mixed $name): string|bool|array|Mysql
     {
-        return self::$store[$name] ?? null;
+        return self::$store[$name];
     }
 
     /**
