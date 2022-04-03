@@ -9,6 +9,9 @@
 
 namespace FluffyDollop\Support;
 
+/**
+ * @deprecated
+ */
 class Registry
 {
     /** Статическое хранилище для данных */
