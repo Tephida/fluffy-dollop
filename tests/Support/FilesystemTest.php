@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -7,14 +8,13 @@
  *
  */
 
-namespace Support;
+namespace FluffyDollop\tests\Support;
 
 use FluffyDollop\Support\Filesystem;
 use PHPUnit\Framework\TestCase;
 
 class FilesystemTest extends TestCase
 {
-
     public function testCreateDir()
     {
         $dir = __DIR__;

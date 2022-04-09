@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -12,8 +13,6 @@ namespace FluffyDollop\Contracts\Security;
 interface Factory
 {
     public static function limit(string $act): int;
-
     public static function check(string $act, false|string $text = false): bool;
-
     public static function logInsert(string $act, bool|string $text = false): void;
 }

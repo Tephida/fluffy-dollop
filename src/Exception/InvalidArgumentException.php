@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -20,5 +21,4 @@ class InvalidArgumentException extends AbstractException
         }
         parent::__construct($message, $code);
     }
-
 }
