@@ -27,9 +27,8 @@ class Mysql
         ?string $db_pass,
         ?string $db_name,
         ?string $db_location = 'localhost',
-        bool    $show_error = true
-    ): bool
-    {
+        bool $show_error = true
+    ): bool {
         $db_location = explode(":", $db_location);
         mysqli_report(MYSQLI_REPORT_OFF);
         if (isset($db_location[1])) {
