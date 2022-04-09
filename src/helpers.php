@@ -76,6 +76,7 @@ function requestFilter(string $source, int $substr_num = 25000, bool $strip_tags
 }
 
 /**
+ * @deprecated
  * @param string $value
  * @param bool $lower
  * @param bool $part
@@ -211,6 +212,7 @@ function installationSelected($id, $options): array|string
 }
 
 /**
+ * @deprecated
  * @param $id
  * @return array
  */
@@ -224,7 +226,7 @@ function xfieldsdataload(string $id): array
 
     $data = [];
     foreach ($x_fields_data as $x_field_data) {
-        list ($x_field_data_name, $x_field_data_value) = explode("|", $x_field_data);
+        [$x_field_data_name, $x_field_data_value] = explode("|", $x_field_data);
         $x_field_data_name = str_replace(["&#124;", "__NEWL__"], ["|", "\r\n"], $x_field_data_name);
         $x_field_data_value = str_replace(["&#124;", "__NEWL__"], ["|", "\r\n"], $x_field_data_value);
         $data[$x_field_data_name] = trim($x_field_data_value);
@@ -233,6 +235,7 @@ function xfieldsdataload(string $id): array
 }
 
 /**
+ * @deprecated
  * @return array|false|void
  */
 function profileload()
@@ -304,13 +307,13 @@ function newGram($num, $a, $b, $c, bool $t = false): string
 {
     if ($t) {
         return declOfNum($num, [sprintf($a, $num), sprintf($b, $num), sprintf($c, $num)]);
-    } else {
-        return declOfNum($num, [sprintf("%d {$a}", $num), sprintf("%d {$b}", $num), sprintf("%d {$c}", $num)]);
     }
+
+    return declOfNum($num, [sprintf("%d {$a}", $num), sprintf("%d {$b}", $num), sprintf("%d {$c}", $num)]);
 }
 
 /**
- * @throws JsonException
+ * @throws \JsonException
  */
 function _e_json(array $value): void
 {
