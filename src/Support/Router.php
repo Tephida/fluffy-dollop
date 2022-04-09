@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -17,37 +18,30 @@ class Router
      * @var array $routes
      */
     private static array $routes = [];
-
-    /**
+/**
      * @var string $requestUri
      */
     private static string $requestUri;
-
     /**
      * @var string $requestMethod
      */
     private static string $requestMethod;
-
     /**
      * @var string|null $requestHandler
      */
     private static ?string $requestHandler;
-
     /**
      * @var array|null $params
      */
     private static ?array $params = [];
-
     /**
      * @var string[] $placeholders
      */
     private static array $placeholders = [':seg' => '([^\/]+)', ':num' => '([0-9]+)', ':any' => '(.+)'];
-
     /**
      * @var string|null $controllerName
      */
     private static ?string $controllerName;
-
     /**
      * @var string|null $actionName
      */
@@ -102,7 +96,8 @@ class Router
      */
     public static function getRequestUri(): string
     {
-        return self::$requestUri; // ?: '/';
+        return self::$requestUri;
+// ?: '/';
     }
 
     /**
@@ -164,7 +159,8 @@ class Router
      * Add route rule.
      *
      * @param string|array $route A URI route string or array
-     * @param callable|string|null $handler Any callable or string with controller classname and action method like "ControllerClass@actionMethod"
+     * @param callable|string|null $handler Any callable or string with controller classname
+     * and action method like "ControllerClass@actionMethod"
      * @return Router
      */
     public function add(array|string $route, callable|null|string $handler = null): Router
@@ -183,7 +179,6 @@ class Router
     public function isFound(): bool
     {
         $uri_data = self::getRequestUri();
-
         /**
          *  if URI equals to route
          */
@@ -235,10 +230,8 @@ class Router
         // execute action in controllers
         if (strpos($handler, '@')) {
             $ca = explode('@', $handler);
-
             $controller_name = self::$controllerName = $ca['0'];
             $action = self::$actionName = $ca['1'];
-
             if (class_exists('\\Mozg\\modules\\' . $controller_name)) {
                 if (!method_exists('\\Mozg\\modules\\' . $controller_name, $action)) {
                     throw new Error("Method '\\App\\Modules\\{$controller_name}::{$action}()' not found");
@@ -246,7 +239,6 @@ class Router
 
                 $class = '\\Mozg\\modules\\' . $controller_name;
                 $controller = new $class();
-
                 $params['params'] = '';
                 $params = [$params];
                 return call_user_func_array([$controller, $action], $params);
