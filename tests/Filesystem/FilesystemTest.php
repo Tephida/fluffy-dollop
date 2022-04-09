@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -7,15 +8,14 @@
  *
  */
 
-namespace Support;
+namespace FluffyDollop\tests\Filesystem;
 
-use FluffyDollop\Support\Filesystem;
+use FluffyDollop\Filesystem\Filesystem;
 use PHPUnit\Framework\TestCase;
 
-class FilesystemTest extends TestCase
+final class FilesystemTest extends TestCase
 {
-
-    public function testCreateDir()
+    public function testCreateDir(): void
     {
         $dir = __DIR__;
         $instance = Filesystem::createDir($dir . '/test/');
@@ -24,9 +24,11 @@ class FilesystemTest extends TestCase
         self::assertEquals(true, $instance);
         $instance = Filesystem::createDir($dir . '/test/');
         self::assertEquals(true, $instance);
+        $instance = Filesystem::createDir($dir . '/test/test/');
+        self::assertEquals(true, $instance);
     }
 
-    public function testCheck()
+    public function testCheck(): void
     {
         $dir = __DIR__;
         $instance = Filesystem::check($dir . '/test/');
@@ -35,17 +37,7 @@ class FilesystemTest extends TestCase
         self::assertEquals(false, $instance);
     }
 
-    public function testFormatsize()
-    {
-        $instance = Filesystem::formatsize('500000');
-        self::assertEquals('488.28 Kb', $instance);
-        $instance = Filesystem::formatsize('300000');
-        self::assertEquals('292.97 Kb', $instance);
-        $instance = Filesystem::formatsize('0');
-        self::assertEquals('0 b', $instance);
-    }
-
-    public function testCopy()
+    public function testCopy(): void
     {
         $dir = __DIR__;
         file_put_contents($dir . "/test/qwerty.php", 'qwerty');
@@ -58,21 +50,31 @@ class FilesystemTest extends TestCase
         self::assertEquals(false, $instance);
     }
 
-    public function testDirSize()
+    public function testDirSize(): void
     {
         $dir = __DIR__;
         $instance = Filesystem::dirSize($dir . '/test/');
         self::assertEquals(12, $instance);
-        $instance = Filesystem::dirSize($dir . '/qwerty/');
+        $instance = Filesystem::dirSize($dir . '/test/test/');
+        self::assertEquals(0, $instance);
+        $instance = Filesystem::dirSize('/qwerty/');
         self::assertEquals(-1, $instance);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $dir = __DIR__;
+        $instance = Filesystem::delete($dir . '/test/qwerty2.php');
+        self::assertEquals(true, $instance);
         $instance = Filesystem::delete($dir . '/test/');
         self::assertEquals(true, $instance);
         $instance = Filesystem::delete($dir . '/test2/');
         self::assertEquals(false, $instance);
+    }
+
+    public function testFileSize(): void
+    {
+        $bytes = Filesystem::humanFileSize(5945766364);
+        self::assertEquals('5.9GB', $bytes);
     }
 }

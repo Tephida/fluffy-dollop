@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -11,9 +12,7 @@ namespace FluffyDollop\Support;
 
 class Declensions
 {
-    public function __construct(
-        public array $declensions
-    )
+    public function __construct(public array $declensions)
     {
     }
 
@@ -30,16 +29,16 @@ class Declensions
 //            $num = $num;
 //        }
         if ($str_len_num === 2) {
-            $parse_num = substr($num, 1, 2);
+            $parse_num = substr((string)$num, 1, 2);
             $num = (int)str_replace('0', '10', $parse_num);
         } elseif ($str_len_num === 3) {
-            $parse_num = substr($num, 2, 3);
+            $parse_num = substr((string)$num, 2, 3);
             $num = (int)str_replace('0', '10', $parse_num);
         } elseif ($str_len_num === 4) {
-            $parse_num = substr($num, 3, 4);
+            $parse_num = substr((string)$num, 3, 4);
             $num = (int)str_replace('0', '10', $parse_num);
         } elseif ($str_len_num === 5) {
-            $parse_num = substr($num, 4, 5);
+            $parse_num = substr((string)$num, 4, 5);
             $num = (int)str_replace('0', '10', $parse_num);
         }
 

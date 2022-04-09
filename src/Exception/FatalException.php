@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -13,5 +14,4 @@ use Error;
 
 class FatalException extends Error
 {
-
 }

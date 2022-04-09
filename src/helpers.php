@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -75,6 +76,7 @@ function requestFilter(string $source, int $substr_num = 25000, bool $strip_tags
 }
 
 /**
+ * @deprecated
  * @param string $value
  * @param bool $lower
  * @param bool $part
@@ -82,7 +84,7 @@ function requestFilter(string $source, int $substr_num = 25000, bool $strip_tags
  */
 function to_translit(string $value, bool $lower = true, bool $part = true): array|string|null
 {
-    $lang_translit = array(
+    $lang_translit = [
         'а' => 'a', 'б' => 'b', 'в' => 'v',
         'г' => 'g', 'д' => 'd', 'е' => 'e',
         'ё' => 'e', 'ж' => 'zh', 'з' => 'z',
@@ -108,7 +110,7 @@ function to_translit(string $value, bool $lower = true, bool $part = true): arra
         'Ь' => '', 'Ы' => 'Y', 'Ъ' => '',
         'Э' => 'E', 'Ю' => 'Yu', 'Я' => 'Ya',
         "Ї" => "yi", "Є" => "ye",
-    );
+    ];
     $value = str_replace(".php", "", $value);
     $value = trim(strip_tags($value));
     $value = preg_replace("/\s+/ms", "-", $value);
@@ -138,7 +140,7 @@ function to_translit(string $value, bool $lower = true, bool $part = true): arra
  */
 function langdate(string $format, $stamp): string
 {
-    $langdate = array(
+    $langdate = [
         'January' => "января",
         'February' => "февраля",
         'March' => "марта",
@@ -178,8 +180,7 @@ function langdate(string $format, $stamp): string
         'Thu' => "Чт",
         'Fri' => "Пт",
         'Sat' => "Сб",
-    );
-
+    ];
     return strtr(date($format, (int)$stamp), $langdate);
 }
 
@@ -189,12 +190,14 @@ function langdate(string $format, $stamp): string
  */
 function strip_data($text): array|string
 {
-    $quotes = array("\x27", "\x22", "\x60", "\t", "\n", "\r", "'", ",", "/", ";", ":", "@", "[", "]", "{", "}", "=", ")", "(", "*", "&", "^", "%", "$", "<", ">", "?", "!", '"');
-    $goodquotes = array("-", "+", "#");
-    $repquotes = array("\-", "\+", "\#");
+    $quotes = [
+        "\x27", "\x22", "\x60", "\t", "\n", "\r", "'", ",", "/", ";", ":", "@", "[", "]", "{", "}", "=", ")",
+        "(", "*", "&", "^", "%", "$", "<", ">", "?", "!", '"'];
+    $good_quotes = ["-", "+", "#"];
+    $rep_quotes = ["\-", "\+", "\#"];
     $text = stripslashes($text);
     $text = trim(strip_tags($text));
-    return str_replace(array(...$quotes, ...$goodquotes), array('', ...$repquotes), $text);
+    return str_replace([...$quotes, ...$good_quotes], ['', ...$rep_quotes], $text);
 }
 
 
@@ -209,6 +212,7 @@ function installationSelected($id, $options): array|string
 }
 
 /**
+ * @deprecated
  * @param $id
  * @return array
  */
@@ -216,20 +220,22 @@ function xfieldsdataload(string $id): array
 {
     $x_fields_data = explode("||", $id);
     $end = array_key_last($x_fields_data);
-    if (!$x_fields_data[$end])
+    if (!$x_fields_data[$end]) {
         unset($x_fields_data[$end]);
+    }
 
-    $data = array();
+    $data = [];
     foreach ($x_fields_data as $x_field_data) {
-        list ($x_field_data_name, $x_field_data_value) = explode("|", $x_field_data);
-        $x_field_data_name = str_replace(array("&#124;", "__NEWL__"), array("|", "\r\n"), $x_field_data_name);
-        $x_field_data_value = str_replace(array("&#124;", "__NEWL__"), array("|", "\r\n"), $x_field_data_value);
+        [$x_field_data_name, $x_field_data_value] = explode("|", $x_field_data);
+        $x_field_data_name = str_replace(["&#124;", "__NEWL__"], ["|", "\r\n"], $x_field_data_name);
+        $x_field_data_value = str_replace(["&#124;", "__NEWL__"], ["|", "\r\n"], $x_field_data_value);
         $data[$x_field_data_name] = trim($x_field_data_value);
     }
     return $data;
 }
 
 /**
+ * @deprecated
  * @return array|false|void
  */
 function profileload()
@@ -242,7 +248,7 @@ function profileload()
     foreach ($filecontents as $name => $value) {
         $filecontents[$name] = explode("|", trim($value));
         foreach ($filecontents[$name] as $name2 => $value2) {
-            $value2 = str_replace(array("&#124;", "__NEWL__"), array("|", "\r\n"), $value2);
+            $value2 = str_replace(["&#124;", "__NEWL__"], ["|", "\r\n"], $value2);
             $filecontents[$name][$name2] = $value2;
         }
     }
@@ -268,9 +274,10 @@ function megaDate(?int $date, bool $func = false, bool $full = false): string
         return langdate('сегодня в H:i', $date);
     } elseif (date('Y-m-d', $date) === date('Y-m-d', ($server_time - 84600))) {
         return langdate('вчера в H:i', $date);
-    } else if ($func) {//no_year
+    } elseif ($func) {
+        //no_year
         return langdate('j M в H:i', $date);
-    } else if ($full) {
+    } elseif ($full) {
         return langdate('j F Y в H:i', $date);
     } else {
         return langdate('j M Y в H:i', $date);
@@ -284,7 +291,7 @@ function megaDate(?int $date, bool $func = false, bool $full = false): string
  */
 function declOfNum(int $number, array $titles): string
 {
-    $cases = array(2, 0, 1, 1, 1, 2);
+    $cases = [2, 0, 1, 1, 1, 2];
     return $titles[($number % 100 > 4 and $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
 }
 
@@ -298,14 +305,15 @@ function declOfNum(int $number, array $titles): string
  */
 function newGram($num, $a, $b, $c, bool $t = false): string
 {
-    if ($t)
-        return declOfNum($num, array(sprintf($a, $num), sprintf($b, $num), sprintf($c, $num)));
-    else
-        return declOfNum($num, array(sprintf("%d {$a}", $num), sprintf("%d {$b}", $num), sprintf("%d {$c}", $num)));
+    if ($t) {
+        return declOfNum($num, [sprintf($a, $num), sprintf($b, $num), sprintf($c, $num)]);
+    }
+
+    return declOfNum($num, [sprintf("%d {$a}", $num), sprintf("%d {$b}", $num), sprintf("%d {$c}", $num)]);
 }
 
 /**
- * @throws JsonException
+ * @throws \JsonException
  */
 function _e_json(array $value): void
 {

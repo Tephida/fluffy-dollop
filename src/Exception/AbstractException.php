@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -18,13 +19,13 @@ use JetBrains\PhpStorm\Pure;
  */
 class AbstractException extends Exception
 {
-    private string $_soapFault;
+    private string $soapFault;
 
     /**
-     * @param string|false $message Error description $message
-     * @param string|false $code HTTP Error code $code
+     * @param string $message Error description $message
+     * @param int $code HTTP Error code $code
      */
-    #[Pure] public function __construct(string|false $message = false, $code = false)
+    #[Pure] public function __construct(string $message = '', int $code = 0)
     {
         parent::__construct($message, $code);
     }
@@ -34,7 +35,7 @@ class AbstractException extends Exception
      */
     public function getSoapFault(): string
     {
-        return $this->_soapFault;
+        return $this->soapFault;
     }
 
     /**
@@ -43,7 +44,7 @@ class AbstractException extends Exception
      */
     public function setSoapFault(string $soapFault): string
     {
-        $this->_soapFault = $soapFault;
+        $this->soapFault = $soapFault;
         return $soapFault;
     }
 
@@ -56,5 +57,4 @@ class AbstractException extends Exception
     {
         return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
-
 }

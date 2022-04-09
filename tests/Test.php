@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -7,6 +8,8 @@
  *
  */
 
+namespace FluffyDollop\tests;
+
 use PHPUnit\Framework\TestCase;
 
 class Test extends TestCase
@@ -14,11 +17,8 @@ class Test extends TestCase
     public function testInput()
     {
         $instance_1 = textFilter('qwerty');
-
         $instance_2 = textFilter('<div>qwerty' . PHP_EOL . 't`tt<div>');
-
         $instance_3 = textFilter('<div>t`tt<div>', 2500, true);
-
         self::assertTrue(true);
     }
 
@@ -32,6 +32,5 @@ class Test extends TestCase
     {
         $instance = requestFilter('qwerty');
         self::assertEquals('', $instance);
-
     }
 }
