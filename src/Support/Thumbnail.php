@@ -10,7 +10,7 @@
 
 namespace FluffyDollop\Support;
 
-use FluffyDollop\Support\Filesystem;
+use FluffyDollop\Filesystem\Filesystem;
 
 /**
  * @deprecated

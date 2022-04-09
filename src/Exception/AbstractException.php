@@ -22,10 +22,10 @@ class AbstractException extends Exception
     private string $soapFault;
 
     /**
-     * @param string|false $message Error description $message
-     * @param string|false $code HTTP Error code $code
+     * @param string $message Error description $message
+     * @param int $code HTTP Error code $code
      */
-    #[Pure] public function __construct(string|false $message = false, $code = false)
+    #[Pure] public function __construct(string $message = '', int $code = 0)
     {
         parent::__construct($message, $code);
     }

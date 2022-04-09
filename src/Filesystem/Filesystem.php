@@ -8,7 +8,7 @@
  *
  */
 
-namespace FluffyDollop\Support;
+namespace FluffyDollop\Filesystem;
 
 class Filesystem
 {
@@ -35,24 +35,17 @@ class Filesystem
                 $file .= '/';
             }
             $files = glob($file . '*', GLOB_MARK);
-            foreach ($files as $file_) {
-                if (is_dir($file_)) {
-                    self::delete($file_);
-                } else {
-                    unlink($file_);
-                }
+            foreach ((array)$files as $file_) {
+                self::delete($file_);
             }
-            if (is_dir($file)) {
-                rmdir($file);
-                return true;
-            }
-            return false;
-        } elseif (is_file($file)) {
+            rmdir($file);
+            return true;
+        }
+        if (is_file($file)) {
             unlink($file);
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -97,11 +90,7 @@ class Filesystem
                     $size += filesize($directory . '/' . $dir_file);
                 } elseif (is_dir($directory . '/' . $dir_file)) {
                     $dirSize = self::dirSize($directory . '/' . $dir_file);
-                    if ($dirSize >= 0) {
                         $size += $dirSize;
-                    } else {
-                        return -1;
-                    }
                 }
             }
             closedir($DIR);
@@ -110,19 +99,17 @@ class Filesystem
     }
 
     /**
-     * @param int|string $file_size
+     * @param int $bytes
+     * @param int $decimals
      * @return string
      */
-    public static function formatsize(int|string $file_size): string
+    final public static function humanFileSize(int $bytes, int $decimals = 1): string
     {
-        if ($file_size >= 1073741824) {
-            return round($file_size / 1073741824 * 100) / 100 . " Gb";
-        } elseif ($file_size >= 1048576) {
-            return round($file_size / 1048576 * 100) / 100 . " Mb";
-        } elseif ($file_size >= 1024) {
-            return round($file_size / 1024 * 100) / 100 . " Kb";
-        } else {
-            return $file_size . " b";
-        }
+        $sizes = 'BKMGTP';
+        $factor = (int) \floor(( \strlen((string)$bytes) - 1 ) / 3);
+        $unit = $sizes[$factor] ?? '';
+        return \sprintf("%.{$decimals}f", $bytes / (1000 ** $factor)) .
+            ( $unit === 'B' ? $unit : $unit . 'B' );
     }
+
 }
