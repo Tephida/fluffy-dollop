@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -11,11 +12,13 @@ namespace FluffyDollop\Support;
 
 use FluffyDollop\Support\Filesystem;
 
+/**
+ * @deprecated
+ */
 class Thumbnail
 {
     /** @var array */
     private array $img;
-
     public function __construct(string $img_file)
     {
         //detect image format
@@ -55,10 +58,9 @@ class Thumbnail
      * @param string|int $jqCrop
      * @return int
      */
-    public function size_auto($size = 100, $site = 0, string|int $jqCrop = 0): int
+    public function sizeAuto($size = 100, $site = 0, string|int $jqCrop = 0): int
     {
         $size = explode("x", $size);
-
         if ($jqCrop) {
             return $this->jqCrop((int)$size[0], (int)$size[1], $jqCrop);
         }
@@ -82,7 +84,6 @@ class Thumbnail
     {
         $w = $this->img['lebar'];
         $h = $this->img['tinggi'];
-
         if ($w <= $nw and $h <= $nh) {
             $this->img['lebar_thumb'] = $w;
             $this->img['tinggi_thumb'] = $h;
@@ -91,23 +92,17 @@ class Thumbnail
 
         $nw = min($nw, $w);
         $nh = min($nh, $h);
-
         $size_ratio = max($nw / $w, $nh / $h);
-
         $src_w = ceil($nw / $size_ratio);
         $src_h = ceil($nh / $size_ratio);
-
         $sx = floor(($w - $src_w) / 2);
-
         $this->img['des'] = imagecreatetruecolor($nw, $nh);
-
         if ($this->img['format'] === "PNG") {
             imagealphablending($this->img['des'], false);
             imagesavealpha($this->img['des'], true);
         }
 
         imagecopyresampled($this->img['des'], $this->img['src'], 0, 0, $sx, 0, $nw, $nh, $src_w, $src_h);
-
         $this->img['src'] = $this->img['des'];
         return 1;
     }
@@ -123,7 +118,6 @@ class Thumbnail
         $cropDataExp = explode('|', $cropData);
         $left = $cropDataExp[0];
         $top = $cropDataExp[1];
-
         if (!$left || $left <= 0) {
             $left = 0;
         }
@@ -140,7 +134,6 @@ class Thumbnail
 
         $w = $this->img['lebar'];
         $h = $this->img['tinggi'];
-
         if ($w <= $nw && $h <= $nh) {
             $this->img['lebar_thumb'] = $w;
             $this->img['tinggi_thumb'] = $h;
@@ -149,23 +142,18 @@ class Thumbnail
 
         $nw = min($nw, $w);
         $nh = min($nh, $h);
-
         $size_ratio = max($nw / $w, $nh / $h);
-
 //        $src_w = ceil($nw / $size_ratio);
 //        $src_h = ceil($nh / $size_ratio);
 
         $this->img['des'] = imagecreatetruecolor($nw, $nh);
-
         if ($this->img['format'] === "PNG") {
             imagealphablending($this->img['des'], false);
             imagesavealpha($this->img['des'], true);
         }
 
         imagecopyresampled($this->img['des'], $this->img['src'], 0, 0, $left, $top, $nw, $nh, $nw, $nh);
-
         $this->img['src'] = $this->img['des'];
-
         return 1;
     }
 
@@ -182,7 +170,7 @@ class Thumbnail
             return 0;
         }
         switch ($site) {
-            case "1" :
+            case "1":
                 if ($this->img['lebar'] <= $size) {
                     $this->img['lebar_thumb'] = $this->img['lebar'];
                     $this->img['tinggi_thumb'] = $this->img['tinggi'];
@@ -191,9 +179,9 @@ class Thumbnail
 
                 $this->img['lebar_thumb'] = $size;
                 $this->img['tinggi_thumb'] = ($this->img['lebar_thumb'] / $this->img['lebar']) * $this->img['tinggi'];
-                break;
 
-            case "2" :
+                break;
+            case "2":
                 if ($this->img['tinggi'] <= $size) {
                     $this->img['lebar_thumb'] = $this->img['lebar'];
                     $this->img['tinggi_thumb'] = $this->img['tinggi'];
@@ -202,17 +190,19 @@ class Thumbnail
 
                 $this->img['tinggi_thumb'] = $size;
                 $this->img['lebar_thumb'] = ($this->img['tinggi_thumb'] / $this->img['tinggi']) * $this->img['lebar'];
+
                 break;
-
-            default :
-
+            default:
                 if ($this->img['lebar'] >= $this->img['tinggi']) {
                     $this->img['lebar_thumb'] = $size;
-                    $this->img['tinggi_thumb'] = ($this->img['lebar_thumb'] / $this->img['lebar']) * $this->img['tinggi'];
+                    $this->img['tinggi_thumb'] =
+                        ($this->img['lebar_thumb'] / $this->img['lebar']) * $this->img['tinggi'];
                 } else {
                     $this->img['tinggi_thumb'] = $size;
-                    $this->img['lebar_thumb'] = ($this->img['tinggi_thumb'] / $this->img['tinggi']) * $this->img['lebar'];
+                    $this->img['lebar_thumb'] =
+                        ($this->img['tinggi_thumb'] / $this->img['tinggi']) * $this->img['lebar'];
                 }
+
 
                 break;
         }
@@ -225,24 +215,32 @@ class Thumbnail
         }
 
         $this->img['des'] = imagecreatetruecolor($this->img['lebar_thumb'], $this->img['tinggi_thumb']);
-
         if ($this->img['format'] === "PNG") {
             imagealphablending($this->img['des'], false);
             imagesavealpha($this->img['des'], true);
         }
 
-        imagecopyresampled($this->img['des'], $this->img['src'], 0, 0, 0, 0, $this->img['lebar_thumb'], $this->img['tinggi_thumb'], $this->img['lebar'], $this->img['tinggi']);
-
+        imagecopyresampled(
+            $this->img['des'],
+            $this->img['src'],
+            0,
+            0,
+            0,
+            0,
+            $this->img['lebar_thumb'],
+            $this->img['tinggi_thumb'],
+            $this->img['lebar'],
+            $this->img['tinggi']
+        );
         $this->img['src'] = $this->img['des'];
         return 1;
-
     }
 
     /**
      * @param $quality
      * @return void
      */
-    public function jpeg_quality($quality = 90): void
+    public function jpegQuality($quality = 90): void
     {
         $this->img['quality'] = $quality;
     }
@@ -281,5 +279,4 @@ class Thumbnail
         }
         imagedestroy($this->img['src']);
     }
-
 }

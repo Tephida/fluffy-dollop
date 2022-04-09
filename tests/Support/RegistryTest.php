@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -7,14 +8,13 @@
  *
  */
 
-namespace Support;
+namespace FluffyDollop\tests\Support;
 
 use FluffyDollop\Support\Registry;
 use PHPUnit\Framework\TestCase;
 
 class RegistryTest extends TestCase
 {
-
     final public function testSet(): void
     {
         $instance = Registry::set('ttt', 'qwerty');

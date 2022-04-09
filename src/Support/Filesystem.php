@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -46,7 +47,7 @@ class Filesystem
                 return true;
             }
             return false;
-        } else if (is_file($file)) {
+        } elseif (is_file($file)) {
             unlink($file);
             return true;
         } else {
@@ -94,7 +95,7 @@ class Filesystem
                 }
                 if (is_file($directory . '/' . $dir_file)) {
                     $size += filesize($directory . '/' . $dir_file);
-                } else if (is_dir($directory . '/' . $dir_file)) {
+                } elseif (is_dir($directory . '/' . $dir_file)) {
                     $dirSize = self::dirSize($directory . '/' . $dir_file);
                     if ($dirSize >= 0) {
                         $size += $dirSize;

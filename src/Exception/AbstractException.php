@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -18,7 +19,7 @@ use JetBrains\PhpStorm\Pure;
  */
 class AbstractException extends Exception
 {
-    private string $_soapFault;
+    private string $soapFault;
 
     /**
      * @param string|false $message Error description $message
@@ -34,7 +35,7 @@ class AbstractException extends Exception
      */
     public function getSoapFault(): string
     {
-        return $this->_soapFault;
+        return $this->soapFault;
     }
 
     /**
@@ -43,7 +44,7 @@ class AbstractException extends Exception
      */
     public function setSoapFault(string $soapFault): string
     {
-        $this->_soapFault = $soapFault;
+        $this->soapFault = $soapFault;
         return $soapFault;
     }
 
@@ -56,5 +57,4 @@ class AbstractException extends Exception
     {
         return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
-
 }

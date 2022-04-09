@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -13,9 +14,8 @@ class Id3v2
 {
     /** @var string */
     public string $error;
-
     /** @var array|string[] */
-    private array $tags = array(
+    private array $tags = [
         'TALB' => 'Album',
         'TCON' => 'Genre',
         'TENC' => 'Encoder',
@@ -28,7 +28,7 @@ class Id3v2
         'TRCK' => 'Track',
         'WXXX' => 'URL',
         'COMM' => 'Comment'
-    );
+    ];
 
     /**
      * @param string $tag
@@ -64,27 +64,23 @@ class Id3v2
         $f = fopen($file, 'rb');
         $header = fread($f, 10);
         $header = unpack("a3signature/c1version_major/c1version_minor/c1flags/Nsize", $header);
-
         if (!$header['signature'] === 'ID3') {
             $this->error = 'This file does not contain ID3 v2 tag';
             fclose($f);
             return false;
         }
 
-        $result = array();
-        for ($i=0; $i<22; $i++) {
+        $result = [];
+        for ($i = 0; $i < 22; $i++) {
             $tag = rtrim(fread($f, 6));
-
             if (!isset($this->tags[$tag])) {
                 break;
             }
             $size = fread($f, 2);
             $size = unpack('n', $size);
-            $size = $size[1]+2;
-
+            $size = $size[1] + 2;
             $value = fread($f, $size);
             $value = $this->decTag($value, $tag);
-
             $result[$this->tags[$tag]] = $value;
         }
         fclose($f);

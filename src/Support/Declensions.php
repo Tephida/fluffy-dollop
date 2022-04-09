@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2022 Tephida
  *
@@ -11,9 +12,7 @@ namespace FluffyDollop\Support;
 
 class Declensions
 {
-    public function __construct(
-        public array $declensions
-    )
+    public function __construct(public array $declensions)
     {
     }
 
