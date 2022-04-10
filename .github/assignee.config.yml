@@ -4,6 +4,7 @@ numberOfReviewers: 1
 
 reviewers:
   - semyon492
+  - phakof
 
 addAssignees: true
 
