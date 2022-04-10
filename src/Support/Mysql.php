@@ -12,6 +12,9 @@ namespace FluffyDollop\Support;
 
 use JetBrains\PhpStorm\NoReturn;
 
+/**
+ * @deprecated
+ */
 class Mysql
 {
     public false|\mysqli|null $db_id = false;

@@ -15,7 +15,7 @@ namespace FluffyDollop\Support;
  */
 class Registry
 {
-    /** Статическое хранилище для данных */
+    /** @var array|string[] $store Статическое хранилище для данных*/
     protected static array $store = [];
 
     /** Защита от создания экземпляров статического класса */
@@ -43,9 +43,9 @@ class Registry
      * Возвращает данные по ключу или null, если не данных нет
      *
      * @param string $name
-     * @return string|bool|array|Mysql|null
+     * @return mixed
      */
-    public static function get(mixed $name): string|bool|array|Mysql|null
+    public static function get(mixed $name): mixed
     {
         return self::$store[$name] ?? null;
     }
@@ -55,7 +55,7 @@ class Registry
      *
      * @param string $name
      * @param mixed $obj
-     * @return string
+     * @return mixed
      */
     public static function set(string $name, mixed $obj): mixed
     {

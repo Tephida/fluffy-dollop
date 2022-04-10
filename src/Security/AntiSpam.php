@@ -32,41 +32,23 @@ class AntiSpam implements Factory
     private static int $max_groups = 5;
     /** @var int Максимум альбомов за день */
     private static int $max_albums = 5;
-    /**
-     * @var int
-     */
+    /** @var int */
     private static int $max_album_photos = 40;
-    /**
-     * @var int
-     */
+    /** @var int */
     private static int $max_music = 5;
-    /**
-     * @var int
-     */
+    /** @var int */
     private static int $max_doc = 5;
-    /**
-     * @var int
-     */
+    /** @var int */
     private static int $max_group_forum = 5;
-    /**
-     * @var int
-     */
+    /** @var int */
     private static int $max_group_forum_msg = 40;
-    /**
-     * @var int
-     */
+    /** @var int */
     private static int $max_notes = 5;
-    /**
-     * @var int
-     */
+    /** @var int */
     private static int $max_videos = 5;
-    /**
-     * @var int
-     */
+    /** @var int */
     private static int $max_support = 1;
-    /**
-     * @var array|int[]
-     */
+    /** @var array|int[] */
     private static array $types = [
         'friends' => 1,
         'messages' => 2,
@@ -157,6 +139,7 @@ class AntiSpam implements Factory
         $action = self::$types[$act];
         $limit = self::limit($act);
 //Проверяем в таблице
+        /** @var array $check */
         $check = $db->superQuery("SELECT COUNT(*) AS cnt FROM `antispam` 
             WHERE act = '{$action}' AND user_id = '{$user_info['user_id']}' 
               AND date = '{$antiDate}' AND txt = '{$text}'");
@@ -180,12 +163,14 @@ class AntiSpam implements Factory
      */
     public static function logInsert(string $act, bool|string $text = false): void
     {
+        /** @var array $user_info */
         $user_info = Registry::get('user_info');
         $db = Registry::get('db');
         $text = (is_string($text) and !empty($text)) ? md5($text) : '';
         $server_time = date('Y-m-d', time());
         $antiDate = strtotime($server_time);
         $act_num = self::getType($act);
+        /** @var string|null $user_info['user_id'] */
         $db->query("INSERT INTO `antispam` 
             SET act = '{$act_num}', 
                user_id = '{$user_info['user_id']}', 
