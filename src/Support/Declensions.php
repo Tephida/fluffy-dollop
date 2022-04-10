@@ -12,6 +12,7 @@ namespace FluffyDollop\Support;
 
 class Declensions
 {
+    /** @var array $declensions */
     public function __construct(public array $declensions)
     {
     }
@@ -25,9 +26,6 @@ class Declensions
     final public function makeWord(int $num, string $type): string
     {
         $str_len_num = strlen((string)$num);
-//        if ($num <= 21) {
-//            $num = $num;
-//        }
         if ($str_len_num === 2) {
             $parse_num = substr((string)$num, 1, 2);
             $num = (int)str_replace('0', '10', $parse_num);
@@ -44,13 +42,17 @@ class Declensions
 
         if ($num === 0) {
             return $this->declensions[$type][0];
-        } elseif ($num === 1) {
+        }
+        if ($num === 1) {
             return $this->declensions[$type][1];
-        } elseif ($num < 5) {
+        }
+        if ($num < 5) {
             return $this->declensions[$type][2];
-        } elseif ($num < 21) {
+        }
+        if ($num < 21) {
             return $this->declensions[$type][3];
-        } elseif ($num === 21) {
+        }
+        if ($num === 21) {
             return $this->declensions[$type][4];
         }
         return '';
