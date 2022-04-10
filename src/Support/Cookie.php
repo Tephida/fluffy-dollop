@@ -18,7 +18,7 @@ class Cookie
      */
     public static function remove(string $name): void
     {
-        $domain = ($_SERVER['HTTP_HOST'] !== 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+        $domain = $_SERVER['HTTP_HOST'];
         $expires = time() + 100;
         setcookie($name, '', $expires, '/', $domain, true, true);
     }
@@ -31,7 +31,7 @@ class Cookie
      */
     public static function append(string $name, string $value, false|int $expires): void
     {
-        $domain = ($_SERVER['HTTP_HOST'] !== 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+        $domain = $_SERVER['HTTP_HOST'];
         if ($expires > 0) {
             $expires = time() + ($expires * 86400);
         } else {
