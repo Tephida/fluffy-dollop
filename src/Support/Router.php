@@ -15,7 +15,7 @@ use Error;
 class Router
 {
     /**
-     * @var array $routes
+     * @var array<int> $routes
      */
     private static array $routes = [];
 /**
@@ -31,9 +31,9 @@ class Router
      */
     private static ?string $requestHandler;
     /**
-     * @var array|null $params
+     * @var array<int> $params
      */
-    private static ?array $params = [];
+    private static array $params = [];
     /**
      * @var string[] $placeholders
      */
@@ -43,9 +43,9 @@ class Router
      */
     private static ?string $controllerName;
     /**
-     * @var string|null $actionName
+     * @var string $actionName
      */
-    private static ?string $actionName;
+    private static string $actionName = '';
 
     /**
      * Router constructor.
@@ -158,16 +158,11 @@ class Router
     /**
      * Add route rule.
      *
-     * @param string|array $route A URI route string or array
-     * @param callable|string|null $handler Any callable or string with controller classname
-     * and action method like "ControllerClass@actionMethod"
+     * @param array<int> $route A URI route string or array
      * @return Router
      */
-    public function add(array|string $route, callable|null|string $handler = null): Router
+    final public function add(array $route): Router
     {
-        if ($handler !== null && !is_array($route)) {
-            $route = [$route => $handler];
-        }
         self::$routes = array_merge(self::$routes, $route);
         return $this;
     }
@@ -212,17 +207,12 @@ class Router
      * Execute Request Handler.
      * Запуск соответствующего действия/экшена/метода контроллера
      *
-     * @param callable|null|string $handler
-     * @param array $params
+     * @param callable|string $handler
+     * @param array<int> $params
      * @return mixed
-     * @throws Error
      */
-    public function executeHandler(callable|null|string $handler = null, array $params = []): mixed
+    final public function executeHandler(callable|string $handler, array $params = []): mixed
     {
-        if ($handler === null) {
-            throw new Error('err');
-        }
-
         // execute action in callable
         if (is_callable($handler)) {
             return call_user_func_array($handler, $params);

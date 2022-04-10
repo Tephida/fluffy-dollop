@@ -52,17 +52,14 @@ function intFilter(string $source, int $default = 0): int
  * @param string $source
  * @param int $substr_num
  * @param bool $strip_tags
- * @return string|array
+ * @return string
  */
-function requestFilter(string $source, int $substr_num = 25000, bool $strip_tags = false): string|array
+function requestFilter(string $source, int $substr_num = 25000, bool $strip_tags = false): string
 {
     if (empty($source)) {
         return '';
     }
     if (!empty($_POST[$source])) {
-        if (is_array($_POST[$source])) {
-            return $_POST[$source];
-        }
         $source = $_POST[$source];
     } elseif (!empty($_GET[$source])) {
         if (is_array($_GET[$source])) {
@@ -76,71 +73,14 @@ function requestFilter(string $source, int $substr_num = 25000, bool $strip_tags
 }
 
 /**
- * @deprecated
- * @param string $value
- * @param bool $lower
- * @param bool $part
- * @return array|string|null
- */
-function to_translit(string $value, bool $lower = true, bool $part = true): array|string|null
-{
-    $lang_translit = [
-        'а' => 'a', 'б' => 'b', 'в' => 'v',
-        'г' => 'g', 'д' => 'd', 'е' => 'e',
-        'ё' => 'e', 'ж' => 'zh', 'з' => 'z',
-        'и' => 'i', 'й' => 'y', 'к' => 'k',
-        'л' => 'l', 'м' => 'm', 'н' => 'n',
-        'о' => 'o', 'п' => 'p', 'р' => 'r',
-        'с' => 's', 'т' => 't', 'у' => 'u',
-        'ф' => 'f', 'х' => 'h', 'ц' => 'c',
-        'ч' => 'ch', 'ш' => 'sh', 'щ' => 'sch',
-        'ь' => '', 'ы' => 'y', 'ъ' => '',
-        'э' => 'e', 'ю' => 'yu', 'я' => 'ya',
-        "ї" => "yi", "є" => "ye",
-
-        'А' => 'A', 'Б' => 'B', 'В' => 'V',
-        'Г' => 'G', 'Д' => 'D', 'Е' => 'E',
-        'Ё' => 'E', 'Ж' => 'Zh', 'З' => 'Z',
-        'И' => 'I', 'Й' => 'Y', 'К' => 'K',
-        'Л' => 'L', 'М' => 'M', 'Н' => 'N',
-        'О' => 'O', 'П' => 'P', 'Р' => 'R',
-        'С' => 'S', 'Т' => 'T', 'У' => 'U',
-        'Ф' => 'F', 'Х' => 'H', 'Ц' => 'C',
-        'Ч' => 'Ch', 'Ш' => 'Sh', 'Щ' => 'Sch',
-        'Ь' => '', 'Ы' => 'Y', 'Ъ' => '',
-        'Э' => 'E', 'Ю' => 'Yu', 'Я' => 'Ya',
-        "Ї" => "yi", "Є" => "ye",
-    ];
-    $value = str_replace(".php", "", $value);
-    $value = trim(strip_tags($value));
-    $value = preg_replace("/\s+/ms", "-", $value);
-    $value = strtr($value, $lang_translit);
-    if ($part) {
-        $value = preg_replace("/[^a-z0-9\_\-.]+/mi", "", $value);
-    } else {
-        $value = preg_replace("/[^a-z0-9\_\-]+/mi", "", $value);
-    }
-    $value = preg_replace('#[\-]+#i', '-', $value);
-    if ($lower) {
-        $value = strtolower($value);
-    }
-    if (strlen($value) > 200) {
-        $value = substr($value, 0, 200);
-        if (($temp_max = strrpos($value, '-'))) {
-            $value = substr($value, 0, $temp_max);
-        }
-    }
-    return $value;
-}
-
-/**
- * @param $format
- * @param $stamp
+ * todo update
+ * @param string $format
+ * @param int $stamp
  * @return string
  */
-function langdate(string $format, $stamp): string
+function langDate(string $format, int $stamp): string
 {
-    $langdate = [
+    $lang_date = [
         'January' => "января",
         'February' => "февраля",
         'March' => "марта",
@@ -181,14 +121,14 @@ function langdate(string $format, $stamp): string
         'Fri' => "Пт",
         'Sat' => "Сб",
     ];
-    return strtr(date($format, (int)$stamp), $langdate);
+    return strtr(date($format, $stamp), $lang_date);
 }
 
 /**
- * @param $text
- * @return array|string
+ * @param string $text
+ * @return string
  */
-function strip_data($text): array|string
+function strip_data(string $text): string
 {
     $quotes = [
         "\x27", "\x22", "\x60", "\t", "\n", "\r", "'", ",", "/", ";", ":", "@", "[", "]", "{", "}", "=", ")",
@@ -202,120 +142,58 @@ function strip_data($text): array|string
 
 
 /**
- * @param $id
- * @param $options
- * @return array|string
+ * @param string $id
+ * @param string $options
+ * @return string
  */
-function installationSelected($id, $options): array|string
+function installationSelected(string $id, string $options): string
 {
     return str_replace('value="' . $id . '"', 'value="' . $id . '" selected', $options);
 }
 
-/**
- * @deprecated
- * @param $id
- * @return array
- */
-function xfieldsdataload(string $id): array
-{
-    $x_fields_data = explode("||", $id);
-    $end = array_key_last($x_fields_data);
-    if (!$x_fields_data[$end]) {
-        unset($x_fields_data[$end]);
-    }
-
-    $data = [];
-    foreach ($x_fields_data as $x_field_data) {
-        [$x_field_data_name, $x_field_data_value] = explode("|", $x_field_data);
-        $x_field_data_name = str_replace(["&#124;", "__NEWL__"], ["|", "\r\n"], $x_field_data_name);
-        $x_field_data_value = str_replace(["&#124;", "__NEWL__"], ["|", "\r\n"], $x_field_data_value);
-        $data[$x_field_data_name] = trim($x_field_data_value);
-    }
-    return $data;
-}
-
-/**
- * @deprecated
- * @return array|false|void
- */
-function profileload()
-{
-    $path = ENGINE_DIR . '/data/xfields.txt';
-    $filecontents = file($path);
-    if (!is_array($filecontents)) {
-        exit('Невозможно загрузить файл');
-    }
-    foreach ($filecontents as $name => $value) {
-        $filecontents[$name] = explode("|", trim($value));
-        foreach ($filecontents[$name] as $name2 => $value2) {
-            $value2 = str_replace(["&#124;", "__NEWL__"], ["|", "\r\n"], $value2);
-            $filecontents[$name][$name2] = $value2;
-        }
-    }
-    return $filecontents;
-}
-
 function checkAjax(): bool
 {
-    return !empty($_POST['ajax']) && $_POST['ajax'] == 'yes';
+    return !empty($_POST['ajax']) && $_POST['ajax'] === 'yes';
 }
 
 
 /**
- * @param int|null $date
+ * @param int $date
  * @param bool $func
  * @param bool $full
  * @return string
  */
-function megaDate(?int $date, bool $func = false, bool $full = false): string
+function megaDate(int $date, bool $func = false, bool $full = false): string
 {
-    $server_time = Registry::get('server_time');
-    if (date('Y-m-d', $date) === date('Y-m-d', $server_time)) {
-        return langdate('сегодня в H:i', $date);
-    } elseif (date('Y-m-d', $date) === date('Y-m-d', ($server_time - 84600))) {
-        return langdate('вчера в H:i', $date);
+    if (date('Y-m-d', $date) === date('Y-m-d', time())) {
+        return langDate('сегодня в H:i', $date);
+    } elseif (date('Y-m-d', $date) === date('Y-m-d', (time() - 84600))) {
+        return langDate('вчера в H:i', $date);
     } elseif ($func) {
         //no_year
-        return langdate('j M в H:i', $date);
+        return langDate('j M в H:i', $date);
     } elseif ($full) {
-        return langdate('j F Y в H:i', $date);
+        return langDate('j F Y в H:i', $date);
     } else {
-        return langdate('j M Y в H:i', $date);
+        return langDate('j M Y в H:i', $date);
     }
 }
 
 /**
  * @param int $number
- * @param array $titles
- * @return mixed
+ * @param array<int> $titles
+ * @return string
  */
 function declOfNum(int $number, array $titles): string
 {
     $cases = [2, 0, 1, 1, 1, 2];
-    return $titles[($number % 100 > 4 and $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
+    return (string)$titles[($number % 100 > 4 and $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
 }
 
 /**
- * @param $num
- * @param $a
- * @param $b
- * @param $c
- * @param bool $t
- * @return mixed
+ * @throws JsonException
  */
-function newGram($num, $a, $b, $c, bool $t = false): string
-{
-    if ($t) {
-        return declOfNum($num, [sprintf($a, $num), sprintf($b, $num), sprintf($c, $num)]);
-    }
-
-    return declOfNum($num, [sprintf("%d {$a}", $num), sprintf("%d {$b}", $num), sprintf("%d {$c}", $num)]);
-}
-
-/**
- * @throws \JsonException
- */
-function _e_json(array $value): void
+function _e_json(mixed $value): void
 {
     header('Content-Type: application/json');
     echo json_encode($value, JSON_THROW_ON_ERROR);
