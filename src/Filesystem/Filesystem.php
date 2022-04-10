@@ -10,7 +10,9 @@
 
 namespace FluffyDollop\Filesystem;
 
-class Filesystem
+use FluffyDollop\Contracts\Filesystem\FilesystemInterface;
+
+class Filesystem implements FilesystemInterface
 {
     /**
      * Create dir
@@ -36,7 +38,9 @@ class Filesystem
             }
             $files = glob($file . '*', GLOB_MARK);
             foreach ((array)$files as $file_) {
-                self::delete($file_);
+                if (is_string($file_)) {
+                    self::delete($file_);
+                }
             }
             rmdir($file);
             return true;
@@ -103,7 +107,7 @@ class Filesystem
      * @param int $decimals
      * @return string
      */
-    final public static function humanFileSize(int $bytes, int $decimals = 1): string
+    public static function humanFileSize(int $bytes, int $decimals = 1): string
     {
         $sizes = 'BKMGTP';
         $factor = (int) \floor(( \strlen((string)$bytes) - 1 ) / 3);
