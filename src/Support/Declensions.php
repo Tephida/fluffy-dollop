@@ -24,7 +24,7 @@ class Declensions
      */
     final public function makeWord(int $num, string $type): string
     {
-        $str_len_num = strlen($num);
+        $str_len_num = strlen((string)$num);
 //        if ($num <= 21) {
 //            $num = $num;
 //        }
