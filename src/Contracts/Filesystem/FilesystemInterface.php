@@ -16,5 +16,5 @@ interface FilesystemInterface
     public static function check(string $file): bool;
     public static function copy(string $from, string $to): bool;
     public static function dirSize(string $directory): bool|int;
-    public static function humanFileSize(int $bytes, int $decimals = 1): string
+    public static function humanFileSize(int $bytes, int $decimals = 1): string;
 }
