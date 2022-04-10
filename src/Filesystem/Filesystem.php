@@ -111,5 +111,4 @@ class Filesystem
         return \sprintf("%.{$decimals}f", $bytes / (1000 ** $factor)) .
             ( $unit === 'B' ? $unit : $unit . 'B' );
     }
-
 }
