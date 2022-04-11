@@ -53,6 +53,7 @@ version-resolver:
       - 'type:services'
       - 'type:interfaces'
       - 'type:services'
+      - 'theme:docs'
   patch:
     labels:
       - patch
