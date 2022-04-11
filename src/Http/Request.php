@@ -13,6 +13,7 @@ namespace FluffyDollop\Http;
 class Request
 {
     /**
+     * filtering input data
      * @param string $source
      * @param int $substr_num
      * @param bool $strip_tags
@@ -37,6 +38,7 @@ class Request
     }
 
     /**
+     * string filtering
      * @param string $input_text
      * @param int $substr_num
      * @param bool $strip_tags
@@ -58,6 +60,7 @@ class Request
     }
 
     /**
+     * filtering the number
      * @param string $source
      * @param int $default
      * @return int
@@ -74,6 +77,10 @@ class Request
         return (int)$source;
     }
 
+    /**
+     * checking the ajax request
+     * @return bool
+     */
     public function checkAjax(): bool
     {
         return !empty($_POST['ajax']) && $_POST['ajax'] === 'yes';
