@@ -8,7 +8,7 @@
  *
  */
 
-use FluffyDollop\Support\Registry;
+use JetBrains\PhpStorm\Deprecated;
 
 /**
  * @param string $input_text
@@ -16,12 +16,15 @@ use FluffyDollop\Support\Registry;
  * @param bool $strip_tags
  * @return string
  */
+#[Deprecated(
+    reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->textFilter() instead',
+    replacement: '(new \FluffyDollop\Http\Request)->textFilter(%parameter0%, %parameter1%, %parameter2%)'
+)]
 function textFilter(string $input_text, int $substr_num = 25000, bool $strip_tags = false): string
 {
     if (empty($input_text)) {
         return '';
     }
-
     if ($strip_tags) {
         $input_text = strip_tags($input_text);
     }
@@ -36,6 +39,10 @@ function textFilter(string $input_text, int $substr_num = 25000, bool $strip_tag
  * @param int $default
  * @return int
  */
+#[Deprecated(
+    reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->int() instead',
+    replacement: '(new \FluffyDollop\Http\Request)->int(%parameter0%, %parameter1%)'
+)]
 function intFilter(string $source, int $default = 0): int
 {
     if (isset($_POST[$source])) {
@@ -49,11 +56,16 @@ function intFilter(string $source, int $default = 0): int
 }
 
 /**
+ * @deprecated
  * @param string $source
  * @param int $substr_num
  * @param bool $strip_tags
  * @return string
  */
+#[Deprecated(
+    reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->filter() instead',
+    replacement: '(new \FluffyDollop\Http\Request)->filter(%parameter0%, %parameter1%, %parameter2%)'
+)]
 function requestFilter(string $source, int $substr_num = 25000, bool $strip_tags = false): string
 {
     if (empty($source)) {
@@ -157,6 +169,10 @@ function installationSelected(string $id, string $options): string
     return str_replace('value="' . $id . '"', 'value="' . $id . '" selected', $options);
 }
 
+#[Deprecated(
+    reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->checkAjax() instead',
+    replacement: '(new \FluffyDollop\Http\Request)->checkAjax()'
+)]
 function checkAjax(): bool
 {
     return !empty($_POST['ajax']) && $_POST['ajax'] === 'yes';
@@ -199,6 +215,10 @@ function declOfNum(int $number, array $titles): string
 /**
  * @throws JsonException
  */
+#[Deprecated(
+    reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Response)->_e_json() instead',
+    replacement: '(new \FluffyDollop\Http\Response)->_e_json(%parameter0%)'
+)]
 function _e_json(mixed $value): void
 {
     header('Content-Type: application/json');
