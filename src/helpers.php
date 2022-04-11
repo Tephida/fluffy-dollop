@@ -137,6 +137,12 @@ function strip_data(string $text): string
     $rep_quotes = ["\-", "\+", "\#"];
     $text = stripslashes($text);
     $text = trim(strip_tags($text));
+
+    /**
+     * @var array<integer,string> $good_quotes
+     * @var array<integer,string> $quotes
+     * @var array<integer,string> $rep_quotes
+     */
     return str_replace([...$quotes, ...$good_quotes], ['', ...$rep_quotes], $text);
 }
 
