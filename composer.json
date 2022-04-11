@@ -9,7 +9,8 @@
     "ext-iconv": "*",
     "ext-mysqli": "*",
     "ext-gd": "*",
-    "ext-zlib": "*"
+    "ext-zlib": "*",
+    "tephida/database": "^0.1"
   },
   "authors": [
     {
