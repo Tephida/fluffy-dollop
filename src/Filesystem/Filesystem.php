@@ -11,6 +11,9 @@
 namespace FluffyDollop\Filesystem;
 
 use FluffyDollop\Contracts\Filesystem\FilesystemInterface;
+use function floor;
+use function sprintf;
+use function strlen;
 
 class Filesystem implements FilesystemInterface
 {
@@ -110,9 +113,9 @@ class Filesystem implements FilesystemInterface
     public static function humanFileSize(int $bytes, int $decimals = 1): string
     {
         $sizes = 'BKMGTP';
-        $factor = (int) \floor(( \strlen((string)$bytes) - 1 ) / 3);
+        $factor = (int) floor(( strlen((string)$bytes) - 1 ) / 3);
         $unit = $sizes[$factor] ?? '';
-        return \sprintf("%.{$decimals}f", $bytes / (1000 ** $factor)) .
+        return sprintf("%.{$decimals}f", $bytes / (1000 ** $factor)) .
             ( $unit === 'B' ? $unit : $unit . 'B' );
     }
 }
