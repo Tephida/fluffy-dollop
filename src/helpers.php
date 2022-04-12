@@ -18,7 +18,7 @@ use JetBrains\PhpStorm\Deprecated;
  */
 #[Deprecated(
     reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->textFilter() instead',
-    replacement: '(new \FluffyDollop\Http\Request)->textFilter(%parameter0%, %parameter1%, %parameter2%)'
+    replacement: '(new \FluffyDollop\Http\Request)->textFilter(%parametersList%)'
 )]
 function textFilter(string $input_text, int $substr_num = 25000, bool $strip_tags = false): string
 {
@@ -41,7 +41,7 @@ function textFilter(string $input_text, int $substr_num = 25000, bool $strip_tag
  */
 #[Deprecated(
     reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->int() instead',
-    replacement: '(new \FluffyDollop\Http\Request)->int(%parameter0%, %parameter1%)'
+    replacement: '(new \FluffyDollop\Http\Request)->int(%parametersList%)'
 )]
 function intFilter(string $source, int $default = 0): int
 {
@@ -64,7 +64,7 @@ function intFilter(string $source, int $default = 0): int
  */
 #[Deprecated(
     reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->filter() instead',
-    replacement: '(new \FluffyDollop\Http\Request)->filter(%parameter0%, %parameter1%, %parameter2%)'
+    replacement: '(new \FluffyDollop\Http\Request)->filter(%parametersList%)'
 )]
 function requestFilter(string $source, int $substr_num = 25000, bool $strip_tags = false): string
 {

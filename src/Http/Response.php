@@ -9,10 +9,12 @@
 
 namespace FluffyDollop\Http;
 
+use JsonException;
+
 class Response
 {
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     public function _e_json(mixed $value): void
     {
