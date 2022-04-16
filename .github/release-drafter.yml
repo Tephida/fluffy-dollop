@@ -63,5 +63,6 @@ version-resolver:
       - hotfix
       - fix
       - theme:documentation
+      - theme:docs
       - analysis
   default: patch
