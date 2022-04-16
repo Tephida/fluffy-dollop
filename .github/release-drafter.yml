@@ -57,12 +57,12 @@ version-resolver:
   patch:
     labels:
       - patch
-      - type:build
+      - 'type:build'
       - bug
       - bugfix
       - hotfix
       - fix
-      - theme:documentation
-      - theme:docs
+      - 'theme:documentation'
+      - 'theme:docs'
       - analysis
   default: patch
