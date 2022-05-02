@@ -164,8 +164,27 @@ function strip_data(string $text): string
  * @param string $options
  * @return string
  */
+#[Deprecated(
+    reason: 'since FluffyDollop 3.11.1, use addToList instead',
+    replacement: 'addToList(%parameter0%, %parameter1%)'
+)]
 function installationSelected(string $id, string $options): string
 {
+    return str_replace('value="' . $id . '"', 'value="' . $id . '" selected', $options);
+}
+
+/**
+ * @param string $id
+ * @param array $list
+ * @return string
+ * @since 3.14.0
+ */
+function addToList(string $id, array $list): string
+{
+    $options = '';
+    foreach ($list as $key => $value){
+        $options.= '<option value="'.$key.'">'.$value.'</option>';
+    }
     return str_replace('value="' . $id . '"', 'value="' . $id . '" selected', $options);
 }
 
