@@ -11,80 +11,6 @@
 use JetBrains\PhpStorm\Deprecated;
 
 /**
- * @param string $input_text
- * @param int $substr_num
- * @param bool $strip_tags
- * @return string
- */
-#[Deprecated(
-    reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->textFilter() instead',
-    replacement: '(new \FluffyDollop\Http\Request)->textFilter(%parametersList%)'
-)]
-function textFilter(string $input_text, int $substr_num = 25000, bool $strip_tags = false): string
-{
-    if (empty($input_text)) {
-        return '';
-    }
-    if ($strip_tags) {
-        $input_text = strip_tags($input_text);
-    }
-    $input_text = trim($input_text);
-    $input_text = stripslashes($input_text);
-    $input_text = str_replace(PHP_EOL, '<br>', $input_text);
-    return htmlspecialchars($input_text, ENT_QUOTES, 'UTF-8');
-}
-
-/**
- * @param string $source
- * @param int $default
- * @return int
- */
-#[Deprecated(
-    reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->int() instead',
-    replacement: '(new \FluffyDollop\Http\Request)->int(%parametersList%)'
-)]
-function intFilter(string $source, int $default = 0): int
-{
-    if (isset($_POST[$source])) {
-        $source = $_POST[$source];
-    } elseif (isset($_GET[$source])) {
-        $source = $_GET[$source];
-    } else {
-        return $default;
-    }
-    return (int)$source;
-}
-
-/**
- * @deprecated
- * @param string $source
- * @param int $substr_num
- * @param bool $strip_tags
- * @return string
- */
-#[Deprecated(
-    reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->filter() instead',
-    replacement: '(new \FluffyDollop\Http\Request)->filter(%parametersList%)'
-)]
-function requestFilter(string $source, int $substr_num = 25000, bool $strip_tags = false): string
-{
-    if (empty($source)) {
-        return '';
-    }
-    if (!empty($_POST[$source])) {
-        $source = $_POST[$source];
-    } elseif (!empty($_GET[$source])) {
-        if (is_array($_GET[$source])) {
-            return $_POST[$source];
-        }
-        $source = $_GET[$source];
-    } else {
-        return '';
-    }
-    return textFilter($source, $substr_num, $strip_tags);
-}
-
-/**
  * todo update
  * @param string $format
  * @param int $stamp
@@ -149,7 +75,6 @@ function strip_data(string $text): string
     $rep_quotes = ["\-", "\+", "\#"];
     $text = stripslashes($text);
     $text = trim(strip_tags($text));
-
     /**
      * @var array<integer,string> $good_quotes
      * @var array<integer,string> $quotes
@@ -158,26 +83,11 @@ function strip_data(string $text): string
     return str_replace([...$quotes, ...$good_quotes], ['', ...$rep_quotes], $text);
 }
 
-
-/**
- * @param string $id
- * @param string $options
- * @return string
- */
-#[Deprecated(
-    reason: 'since FluffyDollop 3.11.1, use addToList instead',
-    replacement: 'addToList(%parameter0%, %parameter1%)'
-)]
-function installationSelected(string $id, string $options): string
-{
-    return str_replace('value="' . $id . '"', 'value="' . $id . '" selected', $options);
-}
-
 /**
  * @param string $id
  * @param array $list
  * @return string
- * @since 3.14.0
+ * @since 4.0
  */
 function addToList(string $id, array $list): string
 {
@@ -187,16 +97,6 @@ function addToList(string $id, array $list): string
     }
     return str_replace('value="' . $id . '"', 'value="' . $id . '" selected', $options);
 }
-
-#[Deprecated(
-    reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Request)->checkAjax() instead',
-    replacement: '(new \FluffyDollop\Http\Request)->checkAjax()'
-)]
-function checkAjax(): bool
-{
-    return !empty($_POST['ajax']) && $_POST['ajax'] === 'yes';
-}
-
 
 /**
  * @param int $date
@@ -231,15 +131,3 @@ function declOfNum(int $number, array $titles): string
     return (string)$titles[($number % 100 > 4 and $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
 }
 
-/**
- * @throws JsonException
- */
-#[Deprecated(
-    reason: 'since FluffyDollop 3.11.1, use (new \FluffyDollop\Http\Response)->_e_json() instead',
-    replacement: '(new \FluffyDollop\Http\Response)->_e_json(%parameter0%)'
-)]
-function _e_json(mixed $value): void
-{
-    header('Content-Type: application/json');
-    echo json_encode($value, JSON_THROW_ON_ERROR);
-}
